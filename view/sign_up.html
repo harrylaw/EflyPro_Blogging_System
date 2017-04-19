@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>EflyPro睿江云博客登录页面</title>
+    <style>
+        .success {color: green;}
+        .error {color: red;}
+    </style>
+    <script src="../scripts/jquery-3.2.1.min.js"></script>
+    <script src="../scripts/sign_up.js"></script>
+</head>
+<body>
+    <h2>注册</h2>
+    <p><span class="error">带 “*” 项为必填内容，邮箱地址将用于登录</span></p>
+    <form id="signUpForm" method="post" action="../controller/sign_up_db.php">
+        昵称: <input  id="name" type="text" name="name" />
+        <span id="nameInfo" class="success error">*</span>
+        <br><br>
+        邮箱: <input id="email" type="text" name="email" />
+        <span id="emailInfo" class="success error">*</span>
+        <br><br>
+        输入密码: <input id="password" type="password" name="password" />
+        <span id="passwordInfo" class="success error">*</span>
+        <br><br>
+        再次输入密码: <input id="passwordConfirmation" type="password" name="passwordConfirmation" />
+        <span id="passwordConfirmationInfo" class="success error">*</span>
+        <br><br>
+        <input type="submit" name="submit" value="注册">
+    </form>
+
+</body>
+</html>

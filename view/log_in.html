@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>EflyPro睿江云登录页面</title>
+    <style>
+        .error {color: red;}
+    </style>
+    <script src="../scripts/jquery-3.2.1.min.js"></script>
+    <script src="../scripts/log_in.js"></script>
+</head>
+<body>
+    <h2>登录</h2>
+    <form id="logInForm" method="post" action="../controller/log_in_db.php">
+        邮箱: <input  id="email" type="text" name="email" />
+        <span id="emailInfo" class="error">*</span>
+        <br><br>
+        密码: <input id="password" type="password" name="password" />
+        <span id="passwordInfo" class="error">*</span>
+        <br><br>
+        <input type="submit" name="submit" value="登录">
+    </form>
+</body>
+</html>
