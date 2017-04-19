@@ -5,6 +5,7 @@
  * Date: 14/04/2017
  * Time: 4:54 PM
  */
+session_start();
 
 /**
  * Created by PhpStorm.
@@ -39,16 +40,15 @@ function connectToDB() {
     }
 }
 
-function getCorrespondingUser_id(string $email, $password): string {
+function getCorrespondingUserInfo(string $email, $password): array {
     if ($conn = connectToDB()) {
-        $sql = "SELECT user_id from users WHERE email='$email' and password='$password'";
+        $sql = "SELECT user_id, name from users WHERE email='$email' and password='$password'";
 
         $result = $conn -> query($sql);
         if ($result -> rowCount() == 0) {
-            return "";
+            return array("user_id"=>"0");
         } else {
-            echo $result -> nextRowset() . "<br>";
-            return $result -> rowCount();
+            return $result -> fetch(PDO::FETCH_ASSOC);
         }
     }
 }
@@ -57,10 +57,16 @@ function getCorrespondingUser_id(string $email, $password): string {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = test_input($_POST["email"]);
     $password = test_input($_POST["password"]);
-    $user_id = getCorrespondingUser_id($email, $password);
-    if ($user_id == "") {
-        echo "密码错误，请重试！<br>返回 <a href='../view/log_in.html'>登录</a> 页面";
+    $user_info_array = getCorrespondingUserInfo($email, $password);
+    
+    if ($user_info_array["user_id"] == 0) {
+        echo "密码错误，请重试！<br>返回 <a href='../view/log_in.html'>登录</a> 页面<br>";
     } else {
-        echo "登录成功！<br>" . $user_id;
+        $_SESSION["user_id"] = (int) $user_info_array["user_id"];
+        $_SESSION["name"] = $user_info_array["name"];
+        $_SESSION["email"] = $email;
+        echo "登录成功！2秒后跳转到主页面<br>";
+        $url = "../index.php";
+        echo "<meta http-equiv='refresh' content='2.0;url=$url'>";
     }
 }

@@ -1,3 +1,6 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -5,7 +8,9 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/index.css"/>
 </head>
 <?php
-
+    $user_id = isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : null;
+    $name = isset($_SESSION["name"]) ? $_SESSION["name"] : null;
+    $email = isset($_SESSION["email"]) ? $_SESSION["email"] : null;
 ?>
 <body>
     <nav>
@@ -15,12 +20,17 @@
             <li><a href="#">功能2</a></li>
             <li><a href="#">功能3</a></li>
         </ul>
-
     </nav>
 
     <div id="content">
         <p id="userInfoPr">
-            你还没登录，请 <a href="view/log_in.html">登录</a> 或 <a href="view/sign_up.html">注册</a>
+            <?php
+                if (!$user_id) {
+                    echo "你还没登录，请 <a href='view/log_in.html'>登录</a> 或 <a href='view/sign_up.html'>注册</a>";
+                } else {
+                    echo "<bold>$name</bold> ，欢迎回来！";
+                }
+            ?>
         </p>
         <section id="text">
             <h1>云磁盘快照深度详解</h1>
