@@ -11,7 +11,7 @@
     <script src="../scripts/sign_up.js"></script>
 </head>
 <body>
-    <h2>用户注册</h2>
+    <h2>管理员注册</h2>
     <p><span class="error">带 “*” 项为必填内容，邮箱地址将用于登录</span></p>
     <form id="signUpForm" method="post" action="../controller/sign_up_db.php">
         昵称: <input  id="name" type="text" name="name" />
@@ -26,7 +26,7 @@
         确认密码: <input id="passwordConfirmation" type="password" name="passwordConfirmation" autocomplete="off" />
         <span id="passwordConfirmationInfo" class="success error">*</span>
         <br><br>
-        <input type="text" name="user_type" value="u" readonly="readonly" style="display: none" />
+        <input type="text" name="user_type" value="a" readonly="readonly" style="display: none" />
         <input type="submit" name="submit" value="注册">
     </form>
 

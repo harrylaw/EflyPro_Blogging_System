@@ -42,7 +42,7 @@ function connectToDB() {
 
 function getCorrespondingUserInfo(string $email, $password): array {
     if ($conn = connectToDB()) {
-        $sql = "SELECT user_id, name from users WHERE email='$email' and password='$password'";
+        $sql = "SELECT user_id, name, user_type from users WHERE email='$email' and password='$password'";
 
         $result = $conn -> query($sql);
         if ($result -> rowCount() == 0) {
@@ -65,6 +65,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION["user_id"] = (int) $user_info_array["user_id"];
         $_SESSION["name"] = $user_info_array["name"];
         $_SESSION["email"] = $email;
+        $_SESSION["user_type"] = $user_info_array["user_type"];
         echo "登录成功！2秒后跳转到主页面<br>";
         $url = "../index.php";
         echo "<meta http-equiv='refresh' content='2.0;url=$url'>";
