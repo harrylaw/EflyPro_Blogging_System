@@ -30,9 +30,9 @@
                     echo "你还没登录，请 <a href='view/log_in.html'>登录</a> 或 <a href='view/sign_up.html'>注册</a>";
                 } else {
                     if ($user_type == "a")
-                        echo "管理员 <bold>$name</bold> ，欢迎回来！<a href='controller/log_out.php'>注销</a>";
+                        echo "管理员 <bold>$name</bold> ，欢迎回来！<a href='view/log_out.php'>注销</a>";
                     else
-                        echo "用户 <bold>$name</bold> ，欢迎回来！<a href='controller/log_out.php'>注销</a>";
+                        echo "用户 <bold>$name</bold> ，欢迎回来！<a href='view/log_out.php'>注销</a>";
                 }
             ?>
         </p>
