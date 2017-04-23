@@ -33,7 +33,6 @@ class User
             $this->password = $password;
             $this->user_type = $user_type;
             $this->reg_date = $this->getReg_dateFromDB($conn);
-            $conn = null;
             return true;
         }
     }
@@ -58,7 +57,6 @@ class User
         $sql = "SELECT user_id, name, user_type, reg_date from users WHERE email='$email' and password='$password'";
 
         $result = $conn -> query($sql);
-        $conn = null;
         if ($result -> rowCount() == 0) {
             return false;
         } else {
@@ -78,7 +76,6 @@ class User
         $sql = "SELECT * FROM users WHERE email = '$email'";
 
         $result = $conn->query($sql);
-        $conn = null;
         return (bool) $result->rowCount();
     }
 }

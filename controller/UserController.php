@@ -30,7 +30,9 @@ class UserController
 
         try {
             $conn = DBController::connectToDB();
-            if ($this->user->signUpToDB($conn, $name, $email, $password, $user_type)) {
+            $result = $this->user->signUpToDB($conn, $name, $email, $password, $user_type);
+            $conn = null;
+            if ($result) {
                 $this->user->writeToSession();
                 return true;
             } else {
@@ -47,7 +49,9 @@ class UserController
 
         try {
             $conn = DBController::connectToDB();
-            if ($this->user->getCorrespondingUserInfoFromDB($conn, $email, $password)) {
+            $result = $this->user->getCorrespondingUserInfoFromDB($conn, $email, $password);
+            $conn = null;
+            if ($result) {
                 $this->user->writeToSession();
                 return true;
             } else {
@@ -66,7 +70,9 @@ class UserController
     public function isEmailTaken(string $email): bool {
         try {
             $conn = DBController::connectToDB();
-            return User::doesEmailExistInDB($conn, $email);
+            $result = User::doesEmailExistInDB($conn, $email);
+            $conn = null;
+            return $result;
         } catch (\PDOException $e) {
             //无法连接到数据库
             throw $e;
