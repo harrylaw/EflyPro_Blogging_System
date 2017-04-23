@@ -8,10 +8,9 @@
 
 namespace controller;
 
-
 class DBController
 {
-    public static function connectToDB() {
+    public static function connectToDB(): \PDO {
         $serverName = "localhost:3306";
         $username = "root";
         $password = "harrylaw";
@@ -23,10 +22,9 @@ class DBController
             $conn->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
             return $conn;
         }
-        catch(\PDOException $e)
-        {
-            //服务器出错
-            return null;
+        catch (\PDOException $e) {
+            //无法连接到数据库
+            throw $e;
         }
     }
 }

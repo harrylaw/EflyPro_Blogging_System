@@ -5,14 +5,14 @@ $(document).ready(function () {
     var nameValid = false, emailValid = false, passwordValid = false, passwordConfirmationValid = false;
 
     function testInput(data) {
-        return data = data.trim();
+        return data.trim();
     }
 
     function isEmailTaken(email) {
         var emailTaken = false;
         $.ajaxSetup({async: false});
 
-        $.post("../controller/query_email.php", {email: email},
+        $.post("../view/query_email.php", {email: email},
             function (data, status) {
                 if (data === "TAKEN") {
                     emailTaken = true;
