@@ -8,6 +8,7 @@
 
 namespace controller;
 
+
 class DBController
 {
     public static function connectToDB(): \PDO {
