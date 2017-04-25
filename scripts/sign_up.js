@@ -2,7 +2,7 @@
  * Created by harry on 14/04/2017.
  */
 $(document).ready(function () {
-    var nameValid = false, emailValid = false, passwordValid = false, passwordConfirmationValid = false;
+    var nicknameValid = false, emailValid = false, passwordValid = false, passwordConfirmationValid = false;
 
     function testInput(data) {
         return data.trim();
@@ -29,18 +29,18 @@ $(document).ready(function () {
 
     function validateName() {
         var pattern = /^[a-zA-Z]\w*$/;
-        var name = testInput($("#name").val());
+        var nickname = testInput($("#nickname").val());
 
         //检测昵称是否只包含字母、数字和下划线，并以字母开头
-        if (!pattern.test(name)) {
-            $("#nameInfo").text("* 请输入以字母开头，由字母、数字和下划线组成的昵称")
+        if (!pattern.test(nickname)) {
+            $("#nicknameInfo").text("* 请输入以字母开头，由字母、数字和下划线组成的昵称")
                 .addClass("error");
-            nameValid = false;
+            nicknameValid = false;
         }
         else {
-            $("#nameInfo").text("可以使用该昵称")
+            $("#nicknameInfo").text("可以使用该昵称")
                 .removeClass("error");
-            nameValid = true;
+            nicknameValid = true;
         }
     }
 
@@ -100,7 +100,7 @@ $(document).ready(function () {
     }
 
     function validateForm() {
-        if (nameValid && emailValid && passwordValid && passwordConfirmationValid){
+        if (nicknameValid && emailValid && passwordValid && passwordConfirmationValid){
             return true;
         } else {
             alert("请按要求填写所有带“*”项");
@@ -112,7 +112,7 @@ $(document).ready(function () {
     $("#signUpForm").submit(function () {
         return validateForm();
     });
-    $("#name").focusout(function () {
+    $("#nickname").focusout(function () {
         validateName();
     });
     $("#email").focusout(function () {

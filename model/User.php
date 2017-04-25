@@ -11,24 +11,24 @@ namespace model;
 
 class User
 {
-    private $user_id, $name, $email, $password, $user_type, $reg_date;
+    private $user_id, $nickname, $email, $password, $user_type, $reg_date;
 
     public function __construct() {
     }
 
-    public function signUpToDB(\PDO $conn, string $name, string $email, string $password, string $user_type): bool {
+    public function signUpToDB(\PDO $conn, string $nickname, string $email, string $password, string $user_type): bool {
         if (self::doesEmailExistInDB($conn, $email)) {
             return false;
         } else {
-            $sql = "INSERT INTO users (name, email, password, user_type)
-                VALUES ('$name', '$email', '$password', '$user_type')";
+            $sql = "INSERT INTO users (nickname, email, password, user_type)
+                VALUES ('$nickname', '$email', '$password', '$user_type')";
 
             // use exec() because no results are returned
             $conn->exec($sql);
             $last_id = $conn->lastInsertId();
 
             $this->user_id = (int) $last_id;
-            $this->name = $name;
+            $this->nickname = $nickname;
             $this->email = $email;
             $this->password = $password;
             $this->user_type = $user_type;
@@ -48,13 +48,13 @@ class User
     public function writeToSession() {
         session_start();
         $_SESSION["user_id"] = $this->user_id;
-        $_SESSION["name"] = $this->name;
+        $_SESSION["nickname"] = $this->nickname;
         $_SESSION["email"] = $this->email;
         $_SESSION["user_type"] = $this->user_type;
     }
 
     public function getCorrespondingUserInfoFromDB(\PDO $conn, string $email, string $password): bool {
-        $sql = "SELECT user_id, name, user_type, reg_date from users WHERE email='$email' and password='$password'";
+        $sql = "SELECT user_id, nickname, user_type, reg_date from users WHERE email='$email' and password='$password'";
 
         $result = $conn -> query($sql);
         if ($result -> rowCount() == 0) {
@@ -63,7 +63,7 @@ class User
             $user_info_array = $result -> fetch(\PDO::FETCH_ASSOC);
 
             $this->user_id = (int) $user_info_array["user_id"];
-            $this->name = $user_info_array["name"];
+            $this->nickname = $user_info_array["nickname"];
             $this->email = $email;
             $this->password = $password;
             $this->user_type = $user_info_array["user_type"];

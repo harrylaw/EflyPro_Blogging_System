@@ -11,9 +11,11 @@ namespace controller;
 class DBController
 {
     public static function connectToDB(): \PDO {
-        $serverName = "localhost:3306";
+        //$serverName = "localhost";
+        $serverName = "121.201.44.207";
         $username = "root";
-        $password = "harrylaw";
+        //$password = "harrylaw";
+        $password = "121.201.44.207";
         $dbName = "EflyProBloggingSystem";
 
         try {

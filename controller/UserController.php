@@ -25,12 +25,12 @@ class UserController
         return self::$instance;
     }
 
-    public function signUp(string $name, string $email, string $password, string $user_type): bool{
+    public function signUp(string $nickname, string $email, string $password, string $user_type): bool{
         $this->user = new User();
 
         try {
             $conn = DBController::connectToDB();
-            $result = $this->user->signUpToDB($conn, $name, $email, $password, $user_type);
+            $result = $this->user->signUpToDB($conn, $nickname, $email, $password, $user_type);
             $conn = null;
             if ($result) {
                 $this->user->writeToSession();

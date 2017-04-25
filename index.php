@@ -9,7 +9,7 @@
 </head>
 <?php
     $user_id = isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : null;
-    $name = isset($_SESSION["name"]) ? $_SESSION["name"] : null;
+    $nickname = isset($_SESSION["nickname"]) ? $_SESSION["nickname"] : null;
     $email = isset($_SESSION["email"]) ? $_SESSION["email"] : null;
     $user_type = isset($_SESSION["user_type"]) ? $_SESSION["user_type"] : null;
 ?>
@@ -30,9 +30,9 @@
                     echo "你还没登录，请 <a href='view/log_in.html'>登录</a> 或 <a href='view/sign_up.html'>注册</a>";
                 } else {
                     if ($user_type == "a")
-                        echo "管理员 <bold>$name</bold> ，欢迎回来！<a href='view/log_out.php'>注销</a>";
+                        echo "管理员 <bold>$nickname</bold> ，欢迎回来！<a href='view/log_out.php'>注销</a>";
                     else
-                        echo "用户 <bold>$name</bold> ，欢迎回来！<a href='view/log_out.php'>注销</a>";
+                        echo "用户 <bold>$nickname</bold> ，欢迎回来！<a href='view/log_out.php'>注销</a>";
                 }
             ?>
         </p>
