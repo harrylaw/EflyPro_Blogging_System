@@ -11,12 +11,11 @@
 </head>
 <body>
     <h2>登录</h2>
-    <p><span class="error">密码区分大小写</span></p>
     <form id="logInForm" method="post" action="log_in.php">
         邮箱: <input  id="email" type="text" name="email" />
         <span id="emailInfo" class="error">*</span>
         <br><br>
-        密码: <input id="password" type="password" name="password" />
+        密码: <input id="password" type="password" name="password" placeholder="密码区分大小写" />
         <span id="passwordInfo" class="error">*</span>
         <br><br>
         <input type="submit" name="submit" value="登录">

@@ -92,7 +92,7 @@ $(document).ready(function () {
 
         //检测密码是否为八位至十六位，且含大小写字母及数字
         if (!pattern.test(password)) {
-            $("#passwordInfo").text("* 请输入8~16位，含大小写字母及数字的密码")
+            $("#passwordInfo").text("* 请输入8~16位，同时含大小写字母及数字的密码")
                 .addClass("error");
             passwordValid = false;
         } else {
