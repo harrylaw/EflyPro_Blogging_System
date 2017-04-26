@@ -67,6 +67,18 @@ class UserController
         unset($this->user);
     }
 
+    public function isNicknameTaken(string $nickname): bool {
+        try {
+            $conn = DBController::connectToDB();
+            $result = User::doesNicknameExistInDB($conn, $nickname);
+            $conn = null;
+            return $result;
+        } catch (\PDOException $e) {
+            //无法连接到数据库
+            throw $e;
+        }
+    }
+
     public function isEmailTaken(string $email): bool {
         try {
             $conn = DBController::connectToDB();

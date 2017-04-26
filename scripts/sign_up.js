@@ -8,12 +8,31 @@ $(document).ready(function () {
         return data.trim();
     }
 
+    function isNicknameTaken(nickname) {
+        var nicknameTaken = false;
+        $.ajaxSetup({async: false});
+
+        $.post("../view/query_handler.php", {query: "nickname", nickname: nickname},
+            function (data) {
+                if (data === "TAKEN") {
+                    nicknameTaken = true;
+                }
+                else {
+                    nicknameTaken = false;
+                }
+            }
+            , "text");
+
+        $.ajaxSetup({async: true});
+        return nicknameTaken;
+    }
+
     function isEmailTaken(email) {
         var emailTaken = false;
         $.ajaxSetup({async: false});
 
-        $.post("../view/query_email.php", {email: email},
-            function (data, status) {
+        $.post("../view/query_handler.php", {query: "email", email: email},
+            function (data) {
                 if (data === "TAKEN") {
                     emailTaken = true;
                 }
@@ -27,7 +46,7 @@ $(document).ready(function () {
         return emailTaken;
     }
 
-    function validateName() {
+    function validateNickname() {
         var pattern = /^[a-zA-Z]\w*$/;
         var nickname = testInput($("#nickname").val());
 
@@ -36,8 +55,11 @@ $(document).ready(function () {
             $("#nicknameInfo").text("* 请输入以字母开头，由字母、数字和下划线组成的昵称")
                 .addClass("error");
             nicknameValid = false;
-        }
-        else {
+        } else if (isNicknameTaken(nickname)) {
+            $("#nicknameInfo").text("* 此昵称已被注册，请换一个昵称")
+                .addClass("error");
+            nicknameValid = false;
+        } else {
             $("#nicknameInfo").text("可以使用该昵称")
                 .removeClass("error");
             nicknameValid = true;
@@ -113,7 +135,7 @@ $(document).ready(function () {
         return validateForm();
     });
     $("#nickname").focusout(function () {
-        validateName();
+        validateNickname();
     });
     $("#email").focusout(function () {
         validateEmail();

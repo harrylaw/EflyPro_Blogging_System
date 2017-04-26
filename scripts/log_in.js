@@ -12,7 +12,7 @@ $(document).ready(function () {
         var emailTaken = false;
         $.ajaxSetup({async: false});
 
-        $.post("../view/query_email.php", {email: email},
+        $.post("../view/query_handler.php", {query: "email", email: email},
             function (data, status) {
                 if (data === "TAKEN") {
                     emailTaken = true;

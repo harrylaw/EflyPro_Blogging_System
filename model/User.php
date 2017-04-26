@@ -54,7 +54,7 @@ class User
     }
 
     public function getCorrespondingUserInfoFromDB(\PDO $conn, string $email, string $password): bool {
-        $sql = "SELECT user_id, nickname, user_type, reg_date from users WHERE email='$email' and password='$password'";
+        $sql = "SELECT user_id, nickname, password, user_type, reg_date from users WHERE email='$email' and password='$password'";
 
         $result = $conn -> query($sql);
         if ($result -> rowCount() == 0) {
@@ -62,6 +62,10 @@ class User
         } else {
             $user_info_array = $result -> fetch(\PDO::FETCH_ASSOC);
 
+            if ($password != $user_info_array["password"]) {
+                //密码大小写不对应
+                return false;
+            }
             $this->user_id = (int) $user_info_array["user_id"];
             $this->nickname = $user_info_array["nickname"];
             $this->email = $email;
@@ -70,6 +74,13 @@ class User
             $this->reg_date = $user_info_array["reg_date"];
             return true;
         }
+    }
+
+    public static function doesNicknameExistInDB(\PDO $conn, string $nickname): bool {
+        $sql = "SELECT * FROM users WHERE nickname = '$nickname'";
+
+        $result = $conn->query($sql);
+        return (bool) $result->rowCount();
     }
 
     public static function doesEmailExistInDB(\PDO $conn, string $email): bool {
