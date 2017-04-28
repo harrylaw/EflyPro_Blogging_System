@@ -28,7 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
         if ($userController->signUp($nickname, $email, $password, $user_type)) {
-            echo "注册成功！2秒后自动登录并跳转到主页面<br>";
+            echo "注册成功！2秒后自动登录并跳转到主页<br>";
             $url = "../index.php";
             echo "<meta http-equiv='refresh' content='2.0;url=$url'>";
         } else {

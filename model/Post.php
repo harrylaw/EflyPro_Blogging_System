@@ -11,16 +11,16 @@ namespace model;
 
 class Post
 {
-    private $post_id, $title, $author_id, $content, $tag_id, $category_id, $post_date;
+    private $post_id, $title, $author_id, $post_content, $post_date;
 
     public function __construct(){
     }
 
-    public function addPost(string $title, int $author_id, string $content){
-        $this->title = $title;
-        $this->author_id = $author_id;
-        $this->content = $content;
+    public static function addPostToDB(\PDO $conn, string $title, int $author_id, string $post_content){
+        $sql = "INSERT INTO posts (title, author_id, post_content)
+                VALUES ('$title', $author_id, '$post_content')";
+
+        // use exec() because no results are returned
+        $conn->exec($sql);
     }
-
-
 }

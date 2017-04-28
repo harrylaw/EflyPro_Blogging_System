@@ -67,14 +67,10 @@ $(document).ready(function () {
         }
     }
 
-    //绑定登录表格与事件
+    //绑定登录表格与函数
     $("#logInForm").submit(function () {
         return validateForm();
     });
-    $("#email").focusout(function () {
-        validateEmail();
-    });
-    $("#password").focusout(function () {
-        validatePassword();
-    });
+    $("#email").focusout(validateEmail);
+    $("#password").focusout(validatePassword);
 });

@@ -130,20 +130,12 @@ $(document).ready(function () {
         }
     }
 
-    //绑定注册表格与事件
+    //绑定注册表格与函数
     $("#signUpForm").submit(function () {
         return validateForm();
     });
-    $("#nickname").focusout(function () {
-        validateNickname();
-    });
-    $("#email").focusout(function () {
-        validateEmail();
-    });
-    $("#password").focusout(function () {
-        validatePassword();
-    });
-    $("#passwordConfirmation").focusout(function () {
-        validatePasswordConfirmation();
-    });
+    $("#nickname").focusout(validateNickname);
+    $("#email").focusout(validateEmail);
+    $("#password").focusout(validatePassword);
+    $("#passwordConfirmation").focusout(validatePasswordConfirmation);
 });

@@ -21,13 +21,12 @@ class User
             return false;
         } else {
             $sql = "INSERT INTO users (nickname, email, password, user_type)
-                VALUES ('$nickname', '$email', '$password', '$user_type')";
+                    VALUES ('$nickname', '$email', '$password', '$user_type')";
 
             // use exec() because no results are returned
             $conn->exec($sql);
-            $last_id = $conn->lastInsertId();
 
-            $this->user_id = (int) $last_id;
+            $this->user_id = (int) $conn->lastInsertId();
             $this->nickname = $nickname;
             $this->email = $email;
             $this->password = $password;
@@ -54,7 +53,8 @@ class User
     }
 
     public function getCorrespondingUserInfoFromDB(\PDO $conn, string $email, string $password): bool {
-        $sql = "SELECT user_id, nickname, password, user_type, reg_date from users WHERE email='$email' and password='$password'";
+        $sql = "SELECT user_id, nickname, password, user_type, reg_date from users
+                WHERE email = '$email' and password = '$password'";
 
         $result = $conn -> query($sql);
         if ($result -> rowCount() == 0) {

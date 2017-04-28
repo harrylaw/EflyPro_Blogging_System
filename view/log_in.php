@@ -30,7 +30,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     try {
         if ($userController->logIn($email, $password)) {
-            echo "登录成功！2秒后跳转到主页面<br>";
+            echo "登录成功！2秒后跳转到主页<br>";
             $url = "../index.php";
             echo "<meta http-equiv='refresh' content='2.0;url=$url'>";
         } else {
