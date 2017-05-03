@@ -8,8 +8,8 @@
 
 namespace controller;
 use model\Post;
-require_once("../model/Post.php");
-require_once("DBController.php");
+require_once "../model/Post.php";
+require_once "DBController.php";
 
 
 class PostController

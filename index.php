@@ -34,33 +34,33 @@
 <body>
     <nav class="blog-masthead navbar-fixed-top">
         <div class="container">
-            <div class="blog-nav-header">
-                <a class="blog-nav-brand" href="#">EflyPro博客</a>
-            </div>
-            <div class="blog-nav">
-                <a class="blog-nav-item active" href="#">博文广场</a>
-                <a class="blog-nav-item" href="view/add_post.php">发博文</a>
-                <a class="blog-nav-item" href="#">功能3</a>
-                <a class="blog-nav-item" href="#">功能4</a>
-                <a class="blog-nav-item" href="#">关于我们</a>
-                <div class="navbar-right">
+                <div class="blog-nav-header">
+                    <a class="blog-nav-brand" href="#">EflyPro博客</a>
+                </div>
+                <ul class="blog-nav">
+                    <li class="blog-nav-item active"><a href="#">博文广场</a></li>
+                    <li class="blog-nav-item"><a href="view/add_post.php">发博文</a></li>
+                    <li class="blog-nav-item"><a href="#">功能3</a></li>
+                    <li class="blog-nav-item"><a href="#">功能4</a></li>
+                    <li class="blog-nav-item"><a href="#">关于我们</a></li>
+                </ul>
+                <ul class="navbar-right">
                     <?php
                         if (!$user_id) {
-                            echo "<a href='view/sign_up.html' class='blog-nav-item'><span class='glyphicon glyphicon-user'></span> 注册</a>";
-                            echo "<a href='view/log_in.html' class='blog-nav-item'><span class='glyphicon glyphicon-log-in'></span> 登录</a>";
+                            echo "<li class='blog-nav-item'><a href='view/sign_up.php'><span class='glyphicon glyphicon-user'></span> 注册</a></li>";
+                            echo "<li class='blog-nav-item'><a href='view/log_in.php'><span class='glyphicon glyphicon-log-in'></span> 登录</a></li>";
                         } else {
                             if ($user_type == "a") {
-                                echo "<span class='blog-nav-userinfo'>管理员 <strong>$nickname</strong> ，欢迎回来！</span>";
-                                echo "<a href='view/log_out.php' class='blog-nav-item'><span class='glyphicon glyphicon-log-out'></span>注销</a>";
+                                echo "<li class='blog-nav-userinfo'><span>管理员 <strong>$nickname</strong> ，欢迎回来！</span></li>";
+                                echo "<li class='blog-nav-item'><a href='view/log_out.php'><span class='glyphicon glyphicon-log-out'></span>注销</a></li>";
                             }
                             else {
-                                echo "<a class='blog-nav-userinfo'>用户 <strong>$nickname</strong> ，欢迎回来！</a>";
-                                echo "<a href='view/log_out.php' class='blog-nav-item'><span class='glyphicon glyphicon-log-out'></span>注销</a>";
+                                echo "<li class='blog-nav-userinfo'><span>用户 <strong>$nickname</strong> ，欢迎回来！</span></li>";
+                                echo "<li class='blog-nav-item'><a href='view/log_out.php'><span class='glyphicon glyphicon-log-out'></span>注销</a></li>";
                             }
                         }
                     ?>
-                </div>
-            </div>
+                </ul>
         </div>
     </nav>
 
@@ -97,7 +97,7 @@
                 <ul>
                   <li>Praesent commodo cursus magna, vel scelerisque nisl consectetur et.</li>
                   <li>Donec id elit non mi porta gravida at eget metus.</li>
-                  <li>Nulla vitae elit libero, a pharetra augue.</li>
+                  <li>Nulla vitae elit libero, a pharetra augue.</li>'''""
                 </ul>
                 <p>Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue.</p>
                 <ol>

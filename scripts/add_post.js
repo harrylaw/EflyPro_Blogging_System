@@ -7,6 +7,7 @@ $(document).ready(function () {
     }
     function validateForm() {
         if (isTitleValid() && isContentValid()) {
+            $("#submit").attr("disabled", "disabled");
             return true;
         } else {
             alert("请填写所有带*项");

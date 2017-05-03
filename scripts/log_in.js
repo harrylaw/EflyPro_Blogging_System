@@ -33,12 +33,18 @@ $(document).ready(function () {
 
         //检测邮箱是否合法
         if (!pattern.test(email)) {
-            $("#emailInfo").text("* 请输入合法的邮箱");
+            $("#emailInfo").text("请输入合法的邮箱");
+            $("#emailField").removeClass("has-success").addClass("has-error");
+            $("#emailInfoIcon").removeClass("glyphicon-ok").addClass("glyphicon-remove");
             emailValid = false;
         } else if (!isEmailTaken(email)) {
-            $("#emailInfo").html("* 此邮箱尚未被注册，现在 <a href='sign_up.html'>注册</a>");
+            $("#emailInfo").html("此邮箱尚未被注册，现在 <a href='sign_up.php'>注册</a>");
+            $("#emailField").removeClass("has-success").addClass("has-error");
+            $("#emailInfoIcon").removeClass("glyphicon-ok").addClass("glyphicon-remove");
             emailValid = false;
         } else {
+            $("#emailField").removeClass("has-error").addClass("has-success");
+            $("#emailInfoIcon").removeClass("glyphicon-remove").addClass("glyphicon-ok");
             $("#emailInfo").text("");
             emailValid = true;
         }
@@ -50,19 +56,24 @@ $(document).ready(function () {
 
         //检测密码是否为八位至十六位，且含大小写字母及数字
         if (!pattern.test(password)) {
-            $("#passwordInfo").text("* 密码为8~16位，同时含大小写字母及数字的组合");
+            $("#passwordField").removeClass("has-success").addClass("has-error");
+            $("#passwordInfoIcon").removeClass("glyphicon-ok").addClass("glyphicon-remove");
+            $("#passwordInfo").text("密码为8~16位，同时含大小写字母及数字的组合");
             passwordValid = false;
         } else {
             $("#passwordInfo").text("");
+            $("#passwordField").removeClass("has-error").addClass("has-success");
+            $("#passwordInfoIcon").removeClass("glyphicon-remove").addClass("glyphicon-ok");
             passwordValid = true;
         }
     }
 
     function validateForm() {
         if (emailValid && passwordValid) {
+            $("#submit").attr("disabled", "disabled");
             return true;
         } else {
-            alert("请按要求填写所有带“*”项");
+            alert("请按要求填写所有表单项");
             return false;
         }
     }

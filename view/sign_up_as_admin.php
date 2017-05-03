@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>EflyPro睿江云博客用户注册页面</title>
+    <title>EflyPro睿江云博客管理员注册页面</title>
 
     <!-- Bootstrap核心CSS -->
     <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
@@ -37,8 +37,8 @@
     </nav>
 
     <div class="container">
-        <form id="signUpForm" method="post" action="sign_up.php" class="form-login">
-            <h2 class="form-login-heading">用户注册</h2>
+        <form id="signUpForm" method="post" action="sign_up_as_admin.php" class="form-login">
+            <h2 class="form-login-heading">管理员注册</h2>
             <div id="nicknameField" class="form-group has-feedback">
                 <label for="nickname" class="sr-only">昵称</label>
                 <input id="nickname" type="text" name="nickname" class="form-control " autofocus="autofocus" placeholder="昵称" />
@@ -63,7 +63,7 @@
                 <span id="passwordConfirmationInfoIcon" class="form-control-feedback glyphicon"></span>
                 <p id="passwordConfirmationInfo" class="control-label"></p>
             </div>
-            <input type="text" name="user_type" value="u" readonly="readonly" style="display: none" />
+            <input type="text" name="user_type" value="a" readonly="readonly" style="display: none" />
             <input type="submit" id="submit" name="submit" value="注册" class="btn btn-lg btn-primary btn-block" />
         </form>
     </div>

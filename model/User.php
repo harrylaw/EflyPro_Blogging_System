@@ -9,6 +9,7 @@
 
 namespace model;
 
+
 class User
 {
     private $user_id, $nickname, $email, $password, $user_type, $reg_date;
@@ -17,7 +18,7 @@ class User
     }
 
     public function signUpToDB(\PDO $conn, string $nickname, string $email, string $password, string $user_type): bool {
-        if (self::doesEmailExistInDB($conn, $email)) {
+        if (self::doesEmailExistInDB($conn, $email) || self::doesNicknameExistInDB($conn, $nickname)) {
             return false;
         } else {
             $sql = "INSERT INTO users (nickname, email, password, user_type)

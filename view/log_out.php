@@ -10,7 +10,7 @@ session_unset();
 session_destroy();
 
 use controller\UserController;
-require_once("../controller/UserController.php");
+require_once "../controller/UserController.php";
 
 UserController::getInstance()->logOut();
 

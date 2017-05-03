@@ -6,7 +6,7 @@
  * Time: 5:35 PM
  */
 use controller\UserController;
-require_once("../controller/UserController.php");
+require_once "../controller/UserController.php";
 
 /**
  * @param string $data

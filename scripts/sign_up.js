@@ -52,16 +52,19 @@ $(document).ready(function () {
 
         //检测昵称是否只包含字母、数字和下划线，并以字母开头
         if (!pattern.test(nickname)) {
-            $("#nicknameInfo").text("* 请输入以字母开头，由字母、数字和下划线组成的昵称")
-                .addClass("error");
+            $("#nicknameInfo").text("请输入以字母开头，由字母、数字和下划线组成的昵称");
+            $("#nicknameField").removeClass("has-success").addClass("has-error");
+            $("#nicknameInfoIcon").removeClass("glyphicon-ok").addClass("glyphicon-remove");
             nicknameValid = false;
         } else if (isNicknameTaken(nickname)) {
-            $("#nicknameInfo").text("* 此昵称已被注册，请换一个昵称")
-                .addClass("error");
+            $("#nicknameInfo").text("此昵称已被注册，请换一个昵称");
+            $("#nicknameField").removeClass("has-success").addClass("has-error");
+            $("#nicknameInfoIcon").removeClass("glyphicon-ok").addClass("glyphicon-remove");
             nicknameValid = false;
         } else {
-            $("#nicknameInfo").text("可以使用该昵称")
-                .removeClass("error");
+            $("#nicknameInfo").text("");
+            $("#nicknameField").removeClass("has-error").addClass("has-success");
+            $("#nicknameInfoIcon").removeClass("glyphicon-remove").addClass("glyphicon-ok");
             nicknameValid = true;
         }
     }
@@ -72,16 +75,19 @@ $(document).ready(function () {
 
         //检测邮箱是否合法
         if (!pattern.test(email)) {
-            $("#emailInfo").text("* 请输入合法的邮箱")
-                .addClass("error");
+            $("#emailInfo").text("请输入合法的邮箱");
+            $("#emailField").removeClass("has-success").addClass("has-error");
+            $("#emailInfoIcon").removeClass("glyphicon-ok").addClass("glyphicon-remove");
             emailValid = false;
         } else if (isEmailTaken(email)) {
-            $("#emailInfo").text("* 此邮箱已被注册，请换一个邮箱")
-                .addClass("error");
+            $("#emailInfo").text("此邮箱已被注册，请换一个邮箱");
+            $("#emailField").removeClass("has-success").addClass("has-error");
+            $("#emailInfoIcon").removeClass("glyphicon-ok").addClass("glyphicon-remove");
             emailValid = false;
         } else {
-            $("#emailInfo").text("可以使用该邮箱")
-                .removeClass("error");
+            $("#emailInfo").text("");
+            $("#emailField").removeClass("has-error").addClass("has-success");
+            $("#emailInfoIcon").removeClass("glyphicon-remove").addClass("glyphicon-ok");
             emailValid = true;
         }
     }
@@ -92,12 +98,14 @@ $(document).ready(function () {
 
         //检测密码是否为八位至十六位，且含大小写字母及数字
         if (!pattern.test(password)) {
-            $("#passwordInfo").text("* 请输入8~16位，同时含大小写字母及数字的密码")
-                .addClass("error");
+            $("#passwordInfo").text("请输入8~16位，同时含大小写字母及数字的密码");
+            $("#passwordField").removeClass("has-success").addClass("has-error");
+            $("#passwordInfoIcon").removeClass("glyphicon-ok").addClass("glyphicon-remove");
             passwordValid = false;
         } else {
-            $("#passwordInfo").text("可以使用该密码")
-                .removeClass("error");
+            $("#passwordInfo").text("");
+            $("#passwordField").removeClass("has-error").addClass("has-success");
+            $("#passwordInfoIcon").removeClass("glyphicon-remove").addClass("glyphicon-ok");
             passwordValid = true;
         }
     }
@@ -107,25 +115,29 @@ $(document).ready(function () {
         var passwordConfirmation = testInput($("#passwordConfirmation").val());
 
         if (password !== passwordConfirmation) {
-            $("#passwordConfirmationInfo").text("* 请输入一致的密码")
-                .addClass("error");
+            $("#passwordConfirmationInfo").text("请输入一致的密码");
+            $("#passwordConfirmationField").removeClass("has-success").addClass("has-error");
+            $("#passwordConfirmationInfoIcon").removeClass("glyphicon-ok").addClass("glyphicon-remove");
             passwordConfirmationValid = false;
         } else if (password === "" && passwordConfirmation === "") {
-            $("#passwordConfirmationInfo").text("*")
-                .addClass("error");
+            $("#passwordConfirmationInfo").text("");
+            $("#passwordConfirmationField").removeClass("has-success").addClass("has-error");
+            $("#passwordConfirmationInfoIcon").removeClass("glyphicon-ok").addClass("glyphicon-remove");
             passwordConfirmationValid = false;
         } else {
-            $("#passwordConfirmationInfo").text("两次密码输入一致")
-                .removeClass("error");
+            $("#passwordConfirmationInfo").text("");
+            $("#passwordConfirmationField").removeClass("has-error").addClass("has-success");
+            $("#passwordConfirmationInfoIcon").removeClass("glyphicon-remove").addClass("glyphicon-ok");
             passwordConfirmationValid = true;
         }
     }
 
     function validateForm() {
         if (nicknameValid && emailValid && passwordValid && passwordConfirmationValid){
+            $("#submit").attr("disabled", "disabled");
             return true;
         } else {
-            alert("请按要求填写所有带“*”项");
+            alert("请按要求填写所有表单项");
             return false;
         }
     }

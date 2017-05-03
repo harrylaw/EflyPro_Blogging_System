@@ -34,23 +34,21 @@ session_start();
     <nav class="blog-masthead navbar-fixed-top">
         <div class="container">
             <div class="blog-nav-header">
-                <a class="blog-nav-brand" href="../index.php">EflyPro博客</a>
+                <a class="blog-nav-brand" href="#">EflyPro博客</a>
             </div>
-            <div class="blog-nav">
-                <a class="blog-nav-item" href="../index.php">博文广场</a>
-                <a class="blog-nav-item active" href="#">发博文</a>
-                <a class="blog-nav-item" href="#">功能3</a>
-                <a class="blog-nav-item" href="#">功能4</a>
-                <a class="blog-nav-item" href="#">关于我们</a>
-                <div class="navbar-right">
-                    <?php
-                        if ($user_type == "a") {
-                            echo "<span class='blog-nav-userinfo'>管理员 <strong>$nickname</strong> ，欢迎回来！</span>";
-                            echo "<a href='log_out.php' class='blog-nav-item'><span class='glyphicon glyphicon-log-out'></span>注销</a>";
-                        }
-                    ?>
-                </div>
-            </div>
+            <ul class="blog-nav">
+                <li class="blog-nav-item"><a href="../index.php">博文广场</a></li>
+                <li class="blog-nav-item active"><a href="#">发博文</a></li>
+                <li class="blog-nav-item"><a href="#">功能3</a></li>
+                <li class="blog-nav-item"><a href="#">功能4</a></li>
+                <li class="blog-nav-item"><a href="#">关于我们</a></li>
+            </ul>
+            <ul class="navbar-right">
+                <?php
+                        echo "<li class='blog-nav-userinfo'><span>管理员 <strong>$nickname</strong> ，欢迎回来！</span></li>";
+                        echo "<li class='blog-nav-item'><a href='log_out.php'><span class='glyphicon glyphicon-log-out'></span>注销</a></li>";
+                ?>
+            </ul>
         </div>
     </nav>
 
@@ -65,16 +63,20 @@ session_start();
         </div>
 
         <div class="row">
-            <form id="addPostForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+            <form id="addPostForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" class="form-horizontal">
                 <div class="form-group">
-                    <label for="title">标题：</label>
-                    <input type="text" id="title" name="title" class="form-control" />
+                    <label for="title" class="control-label col-sm-1">标题：</label>
+                    <div class="col-sm-11">
+                        <input type="text" id="title" name="title" class="form-control" autofocus="autofocus" />
+                    </div>
                 </div>
                 <div class="form-group">
-                    <label for="post_content">内容：</label>
-                    <textarea id="post_content" name="post_content" rows="20" class="form-control"></textarea>
+                    <label for="post_content" class="control-label col-sm-1">内容：</label>
+                    <div class="col-sm-11">
+                        <textarea id="post_content" name="post_content" rows="20" class="form-control"></textarea>
+                    </div>
                 </div>
-                <input type="submit" value="发博文" class="btn btn-default">
+                <input type="submit" id="submit" value="发博文" class="btn btn-default btn-primary col-sm-offset-6" style="margin-bottom: 60px;">
             </form>
         </div>
     </div>
@@ -95,11 +97,12 @@ session_start();
 </html>
 <?php
     use controller\PostController;
-    require_once("../controller/PostController.php");
+    require_once "../controller/PostController.php";
 
     function test_input(string $data): string {
         $data = stripslashes($data);
         $data = htmlspecialchars($data);
+        $data = str_replace("'", "&apos;", $data);
         return $data;
     }
 
@@ -115,7 +118,8 @@ session_start();
 
         } catch (\PDOException $e) {
             //无法连接到数据库
-            echo "<script>alert('发博文失败！服务器出错，请联系技术人员。')</script>";
+            echo $e;
+            //echo "<script>alert('发博文失败！服务器出错，请联系技术人员。')</script>";
         }
     }
 ?>
