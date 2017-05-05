@@ -63,7 +63,6 @@
                 <span id="passwordConfirmationInfoIcon" class="form-control-feedback glyphicon"></span>
                 <p id="passwordConfirmationInfo" class="control-label"></p>
             </div>
-            <input type="text" name="user_type" value="a" readonly="readonly" style="display: none" />
             <input type="submit" id="submit" name="submit" value="注册" class="btn btn-lg btn-primary btn-block" />
         </form>
     </div>
@@ -94,7 +93,7 @@
         $nickname = test_input($_POST["nickname"]);
         $email = test_input($_POST["email"]);
         $password = test_input($_POST["password"]);
-        $user_type = test_input($_POST["user_type"]);
+        $user_type = "a";
         $user_controller = UserController::getInstance();
 
         try {
