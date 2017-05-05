@@ -22,10 +22,10 @@ function test_input(string $data): string {
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($_POST["query"] == "nickname") {
         $nickname = test_input($_POST["nickname"]);
-        $userController = UserController::getInstance();
+        $user_controller = UserController::getInstance();
 
         try {
-            if ($userController->isNicknameTaken($nickname))
+            if ($user_controller->isNicknameTaken($nickname))
                 echo "TAKEN";
             else
                 echo "AVAILABLE";
@@ -36,10 +36,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     if ($_POST["query"] == "email") {
         $email = test_input($_POST["email"]);
-        $userController = UserController::getInstance();
+        $user_controller = UserController::getInstance();
 
         try {
-            if ($userController->isEmailTaken($email))
+            if ($user_controller->isEmailTaken($email))
                 echo "TAKEN";
             else
                 echo "AVAILABLE";

@@ -40,8 +40,8 @@ class User
     private function getReg_dateFromDB(\PDO $conn): string {
         $sql = "SELECT reg_date FROM users WHERE user_id = $this->user_id";
 
-        $result = $conn->query($sql);
-        $reg_date = $result->fetch(\PDO::FETCH_ASSOC)["reg_date"];
+        $result_set = $conn->query($sql);
+        $reg_date = $result_set->fetch(\PDO::FETCH_ASSOC)["reg_date"];
         return $reg_date;
     }
 
@@ -57,11 +57,11 @@ class User
         $sql = "SELECT user_id, nickname, password, user_type, reg_date from users
                 WHERE email = '$email' and password = '$password'";
 
-        $result = $conn -> query($sql);
-        if ($result -> rowCount() == 0) {
+        $result_set = $conn->query($sql);
+        if ($result_set->rowCount() == 0) {
             return false;
         } else {
-            $user_info_array = $result -> fetch(\PDO::FETCH_ASSOC);
+            $user_info_array = $result_set->fetch(\PDO::FETCH_ASSOC);
 
             if ($password != $user_info_array["password"]) {
                 //密码大小写不对应
@@ -80,14 +80,22 @@ class User
     public static function doesNicknameExistInDB(\PDO $conn, string $nickname): bool {
         $sql = "SELECT * FROM users WHERE nickname = '$nickname'";
 
-        $result = $conn->query($sql);
-        return (bool) $result->rowCount();
+        $result_set = $conn->query($sql);
+        return (bool) $result_set->rowCount();
     }
 
     public static function doesEmailExistInDB(\PDO $conn, string $email): bool {
         $sql = "SELECT * FROM users WHERE email = '$email'";
 
-        $result = $conn->query($sql);
-        return (bool) $result->rowCount();
+        $result_set = $conn->query($sql);
+        return (bool) $result_set->rowCount();
+    }
+
+    public static function getNicknameById(\PDO $conn, int $user_id):string {
+        $sql = "SELECT nickname FROM users WHERE user_id = $user_id";
+
+        $result_set = $conn->query($sql);
+        $nickname_raw = $result_set->fetch(\PDO::FETCH_ASSOC);
+        return $nickname_raw["nickname"];
     }
 }

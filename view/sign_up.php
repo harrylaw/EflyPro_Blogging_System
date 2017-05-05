@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>EflyPro睿江云博客用户注册页面</title>
+    <title>注册|睿江云EflyPro博客系统</title>
 
     <!-- Bootstrap核心CSS -->
     <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
@@ -18,10 +18,10 @@
     <nav class="blog-masthead navbar-fixed-top">
         <div class="container">
             <div class="blog-nav-header">
-                <a class="blog-nav-brand" href="../index.php">EflyPro博客</a>
+                <a class="blog-nav-brand" href="index.php">EflyPro博客</a>
             </div>
             <ul class="blog-nav">
-                <li class="blog-nav-item"><a href="../index.php">博文广场</a></li>
+                <li class="blog-nav-item"><a href="index.php">博文广场</a></li>
                 <li class="blog-nav-item"><a href="add_post.php">发博文</a></li>
                 <li class="blog-nav-item"><a href="#">功能3</a></li>
                 <li class="blog-nav-item"><a href="#">功能4</a></li>
@@ -95,14 +95,14 @@
         $email = test_input($_POST["email"]);
         $password = test_input($_POST["password"]);
         $user_type = test_input($_POST["user_type"]);
-        $userController = UserController::getInstance();
+        $user_controller = UserController::getInstance();
 
         try {
-            if ($userController->signUp($nickname, $email, $password, $user_type)) {
+            if ($user_controller->signUp($nickname, $email, $password, $user_type)) {
                 echo "<script>$('#signUpForm').css('display', 'none');</script>";
                 echo "<h4 style='text-align: center; padding-top: 60px;'>注册成功！2秒后自动登录并跳转到主页</h4>";
-                $url = "../index.php";
-                echo "<meta http-equiv='refresh' content='2.0;url=$url'>";
+                $url = "index.php";
+                echo "<meta http-equiv='refresh' content='2.0; url=$url'>";
             } else {
                 echo "<script>$('#signUpForm').css('display', 'none');</script>";
                 echo "<h4 style='text-align: center; padding-top: 60px;'>注册失败！此邮箱或昵称已被注册，请换一个邮箱或昵称再试/h4>";

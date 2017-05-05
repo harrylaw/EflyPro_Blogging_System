@@ -7,6 +7,7 @@
  */
 
 namespace controller;
+use model\Post;
 use model\User;
 require_once "../model/User.php";
 require_once "DBController.php";
@@ -83,6 +84,18 @@ class UserController
         try {
             $conn = DBController::connectToDB();
             $result = User::doesEmailExistInDB($conn, $email);
+            $conn = null;
+            return $result;
+        } catch (\PDOException $e) {
+            //无法连接到数据库
+            throw $e;
+        }
+    }
+
+    public function getNicknameById(int $user_id): string{
+        try {
+            $conn = DBController::connectToDB();
+            $result = User::getNicknameById($conn, $user_id);
             $conn = null;
             return $result;
         } catch (\PDOException $e) {

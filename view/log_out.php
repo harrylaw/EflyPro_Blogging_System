@@ -14,4 +14,4 @@ require_once "../controller/UserController.php";
 
 UserController::getInstance()->logOut();
 
-echo "<script>location.href='../index.php'</script>";
+echo "<script>location.href='index.php'</script>";

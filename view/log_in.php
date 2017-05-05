@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>EflyPro睿江云博客登录页面</title>
+    <title>登录|睿江云EflyPro博客系统</title>
 
     <!-- Bootstrap核心CSS -->
     <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
@@ -18,10 +18,10 @@
     <nav class="blog-masthead navbar-fixed-top">
         <div class="container">
             <div class="blog-nav-header">
-                <a class="blog-nav-brand" href="../index.php">EflyPro博客</a>
+                <a class="blog-nav-brand" href="index.php">EflyPro博客</a>
             </div>
             <ul class="blog-nav">
-                <li class="blog-nav-item"><a href="../index.php">博文广场</a></li>
+                <li class="blog-nav-item"><a href="index.php">博文广场</a></li>
                 <li class="blog-nav-item"><a href="add_post.php">发博文</a></li>
                 <li class="blog-nav-item"><a href="#">功能3</a></li>
                 <li class="blog-nav-item"><a href="#">功能4</a></li>
@@ -37,7 +37,7 @@
     </nav>
 
     <div class="container">
-        <form id="logInForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" class="form-login">
+        <form id="logInForm" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" class="form-login">
             <h2 class="form-login-heading">登录</h2>
             <div id="emailField" class="form-group has-feedback">
                 <label for="email" class="sr-only">邮箱</label>
@@ -84,14 +84,14 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $email = test_input($_POST["email"]);
         $password = test_input($_POST["password"]);
-        $userController = UserController::getInstance();
+        $user_controller = UserController::getInstance();
 
         try {
-            if ($userController->logIn($email, $password)) {
+            if ($user_controller->logIn($email, $password)) {
                 echo "<script>$('#logInForm').css('display', 'none');</script>";
                 echo "<h4 style='text-align: center; padding-top: 60px;'>登录成功！2秒后跳转到主页</h4>";
-                $url = "../index.php";
-                echo "<meta http-equiv='refresh' content='2.0;url=$url'>";
+                $url = "index.php";
+                echo "<meta http-equiv='refresh' content='2.0; url=$url'>";
             } else {
                 echo "<script>$('#logInForm').css('display', 'none');</script>";
                 echo "<h4 style='text-align: center; padding-top: 60px;'>密码错误，请重试</h4>";

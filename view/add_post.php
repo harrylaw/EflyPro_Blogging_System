@@ -1,5 +1,5 @@
 <?php
-session_start();
+    session_start();
 ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -8,7 +8,7 @@ session_start();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>发博文</title>
+    <title>发博文|睿江云EflyPro博客系统</title>
 
     <!-- Bootstrap核心CSS -->
     <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
@@ -27,7 +27,7 @@ session_start();
     $nickname = isset($_SESSION["nickname"]) ? $_SESSION["nickname"] : null;
     $user_type = isset($_SESSION["user_type"]) ? $_SESSION["user_type"] : null;
     if ($user_type != 'a') {
-        echo "<script>alert('你没有发博文的权限！即将返回主页。'); location.href = '../index.php'; </script>";
+        echo "<script>alert('你没有发博文的权限！即将返回主页。'); location.href = 'index.php'; </script>";
     }
 ?>
 <body>
@@ -37,7 +37,7 @@ session_start();
                 <a class="blog-nav-brand" href="#">EflyPro博客</a>
             </div>
             <ul class="blog-nav">
-                <li class="blog-nav-item"><a href="../index.php">博文广场</a></li>
+                <li class="blog-nav-item"><a href="index.php">博文广场</a></li>
                 <li class="blog-nav-item active"><a href="#">发博文</a></li>
                 <li class="blog-nav-item"><a href="#">功能3</a></li>
                 <li class="blog-nav-item"><a href="#">功能4</a></li>
@@ -110,11 +110,11 @@ session_start();
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $title = test_input($_POST["title"]);
         $content = test_input($_POST["post_content"]);
-        $postController = PostController::getInstance();
+        $post_controller = PostController::getInstance();
 
         try {
-            $postController->post($title, $user_id, $content);
-            echo "<script>alert('发博文成功！按确认返回主页。'); location.href = '../index.php';</script>";
+            $post_controller->post($title, $user_id, $content);
+            echo "<script>alert('发博文成功！按确认返回主页。'); location.href = 'index.php';</script>";
 
         } catch (\PDOException $e) {
             //无法连接到数据库
