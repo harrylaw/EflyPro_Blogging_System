@@ -61,6 +61,13 @@ class Post
         return $post;
     }
 
+    public static function doesPostExistInDB(\PDO $conn, int $post_id): bool {
+        $sql = "SELECT * FROM posts WHERE post_id = $post_id";
+
+        $result_set = $conn->query($sql);
+        return (bool) $result_set->rowCount();
+    }
+
     public function getPost_id(): int {
         return $this->post_id;
     }

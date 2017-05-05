@@ -30,10 +30,17 @@
     $nickname = isset($_SESSION["nickname"]) ? $_SESSION["nickname"] : null;
     $email = isset($_SESSION["email"]) ? $_SESSION["email"] : null;
     $user_type = isset($_SESSION["user_type"]) ? $_SESSION["user_type"] : null;
-    $post_id = isset($_GET["post_id"]) ? (int) $_GET["post_id"] : 1;
     use controller\PostController;
     require_once "../controller/PostController.php";
     $post_controller = PostController::getInstance();
+    if (isset($_GET["post_id"])) {
+        $post_id = (int) $_GET["post_id"];
+        if ($post_id < 1 || !$post_controller->doesPostExist($post_id)) {
+            $post_id = null;
+        }
+    } else {
+        $post_id = 1;
+    }
 ?>
 <body>
     <nav class="blog-masthead navbar-fixed-top">
@@ -80,7 +87,7 @@
                 <?php
                     use controller\UserController;
                     require_once "../controller/UserController.php";
-                    if (1==1) {
+                    if (isset($post_id)) {
                         $post = $post_controller->getPostById($post_id);
                         $post_id = $post->getPost_id();
                         $title = $post->getTitle();
@@ -138,6 +145,13 @@
                 </div>
             </div><!-- /.blog-sidebar -->
         </div><!-- /.row -->
+        <?php
+            //当post_id没意义时
+            if (!isset($post_id)) {
+                echo "<script>document.getElementById('content').style.display = 'none';</script>";
+                echo "<h4 style='text-align: center; padding-bottom: 250px' class='lead'>您请求的页面不存在，返回 <a href='index.php'>首页</a></h4>";
+            }
+        ?>
     </div><!-- /.container -->
 
     <footer class="blog-footer">

@@ -88,4 +88,16 @@ class PostController
             throw $e;
         }
     }
+
+    public function doesPostExist(int $post_id):bool {
+        try {
+            $conn = DBController::connectToDB();
+            $result = Post::doesPostExistInDB($conn, $post_id);
+            $conn = null;
+            return $result;
+        } catch (\PDOException $e) {
+            //无法连接到数据库
+            throw $e;
+        }
+    }
 }
