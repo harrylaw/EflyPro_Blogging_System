@@ -11,7 +11,7 @@
     <meta name="description" content="EflyPro睿江云博客系统">
     <meta name="author" content="EflyPro睿江云">
 
-    <title>首页|睿江云EflyPro博客系统</title>
+    <title>博文广场|睿江云EflyPro博客系统</title>
 
     <!-- Bootstrap核心CSS -->
     <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
@@ -51,7 +51,7 @@
                 <ul class="blog-nav">
                     <li class="blog-nav-item active"><a href="#">博文广场</a></li>
                     <li class="blog-nav-item"><a href="add_post.php">发博文</a></li>
-                    <li class="blog-nav-item"><a href="#">功能3</a></li>
+                    <li class="blog-nav-item"><a href="get_post.php">全文阅读</a></li>
                     <li class="blog-nav-item"><a href="#">功能4</a></li>
                     <li class="blog-nav-item"><a href="#">关于我们</a></li>
                 </ul>
@@ -168,7 +168,7 @@
             //当current_page没意义时
             if (!isset($posts_on_current_page)) {
                 echo "<script>document.getElementById('content').style.display = 'none';</script>";
-                echo "<h4 style='text-align: center; padding-bottom: 250px' class='lead'>您请求的页面不存在，返回 <a href='index.php'>首页</a></h4>";
+                echo "<h4 style='text-align: center; padding-bottom: 250px' class='lead'>您请求的页面不存在，返回 <a href='index.php'>博文广场</a></h4>";
             }
         ?>
     </div><!-- /.container -->

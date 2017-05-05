@@ -11,7 +11,7 @@
     <meta name="description" content="EflyPro睿江云博客系统">
     <meta name="author" content="EflyPro睿江云">
 
-    <title>阅读博文|睿江云EflyPro博客系统</title>
+    <title>全文阅读|睿江云EflyPro博客系统</title>
 
     <!-- Bootstrap核心CSS -->
     <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
@@ -51,7 +51,7 @@
             <ul class="blog-nav">
                 <li class="blog-nav-item"><a href="index.php">博文广场</a></li>
                 <li class="blog-nav-item"><a href="add_post.php">发博文</a></li>
-                <li class="blog-nav-item"><a href="#">功能3</a></li>
+                <li class="blog-nav-item active"><a href="#">全文阅读</a></li>
                 <li class="blog-nav-item"><a href="#">功能4</a></li>
                 <li class="blog-nav-item"><a href="#">关于我们</a></li>
             </ul>
@@ -96,8 +96,30 @@
                         $user_controller = UserController::getInstance();
                         $author_nickname = $user_controller->getNicknameById($post_author_id);
                         $post_date = $post->getPost_date();
-                        echo "<a href='index.php'>返回首页</a>\n";
+
+                        //上下篇导航
+                        $last_post_id_and_title = $post_controller->getLastPost_idAndTitle($post_id);
+                        $next_post_id_and_title = $post_controller->getNextPost_idAndTitle($post_id);
+                        if ($last_post_id = $last_post_id_and_title["post_id"]) {
+                            $last_title = $last_post_id_and_title["title"];
+                            echo "<a href='get_post.php?post_id=$last_post_id'>上一篇: $last_title</a>\n";
+                            echo "<br>\n";
+                        } else {
+                            echo "<span>上一篇: 没有上一篇了</span>\n";
+                            echo "<br>\n";
+                        }
+                        if ($next_post_id = $next_post_id_and_title["post_id"]) {
+                            $next_title = $next_post_id_and_title["title"];
+                            echo "<a href='get_post.php?post_id=$next_post_id'>下一篇: $next_title</a>\n";
+                            echo "<br>\n";
+                        } else {
+                            echo "<span>下一篇: 没有下一篇了</span>\n";
+                            echo "<br>\n";
+                        }
+
                         echo "<hr>\n";
+
+                        //打印博文
                         echo "<div class='blog-post'>\n";
                         echo "<h2 class='blog-post-title'>$title</h2>\n\n";
                         echo "<p class='blog-post-meta'>发表时间：$post_date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作者：$author_nickname</p>\n";
@@ -149,7 +171,7 @@
             //当post_id没意义时
             if (!isset($post_id)) {
                 echo "<script>document.getElementById('content').style.display = 'none';</script>";
-                echo "<h4 style='text-align: center; padding-bottom: 250px' class='lead'>您请求的页面不存在，返回 <a href='index.php'>首页</a></h4>";
+                echo "<h4 style='text-align: center; padding-bottom: 250px' class='lead'>您请求的页面不存在，返回 <a href='index.php'>博文广场</a></h4>";
             }
         ?>
     </div><!-- /.container -->

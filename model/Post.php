@@ -68,6 +68,34 @@ class Post
         return (bool) $result_set->rowCount();
     }
 
+    public static function getLastPost_idAndTitleFromDB(\PDO $conn, int $post_id): array {
+        $sql = "SELECT post_id, title FROM posts WHERE post_id < $post_id ORDER BY post_id DESC LIMIT 1";
+
+        $result_set = $conn->query($sql);
+        if ($result_set->rowCount()) {
+            $result_raw = $result_set->fetch(\PDO::FETCH_ASSOC);
+            $last_post_id = (int) $result_raw["post_id"];
+            $last_title = $result_raw["title"];
+            return array("post_id" => $last_post_id, "title" => $last_title);
+        } else {
+            return array("post_id" => 0);
+        }
+    }
+
+    public static function getNextPost_idAndTitleFromDB(\PDO $conn, int $post_id): array {
+        $sql = "SELECT post_id, title FROM posts WHERE post_id > $post_id ORDER BY post_id LIMIT 1";
+
+        $result_set = $conn->query($sql);
+        if ($result_set->rowCount()) {
+            $result_raw = $result_set->fetch(\PDO::FETCH_ASSOC);
+            $next_post_id = (int) $result_raw["post_id"];
+            $next_title = $result_raw["title"];
+            return array("post_id" => $next_post_id, "title" => $next_title);
+        } else {
+            return array("post_id" => 0);
+        }
+    }
+
     public function getPost_id(): int {
         return $this->post_id;
     }

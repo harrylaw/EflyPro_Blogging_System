@@ -27,7 +27,7 @@
     $nickname = isset($_SESSION["nickname"]) ? $_SESSION["nickname"] : null;
     $user_type = isset($_SESSION["user_type"]) ? $_SESSION["user_type"] : null;
     if ($user_type != 'a') {
-        echo "<script>alert('你没有发博文的权限！即将返回主页。'); location.href = 'index.php'; </script>";
+        echo "<script>alert('你没有发博文的权限！即将返回博文广场。'); location.href = 'index.php'; </script>";
     }
 ?>
 <body>
@@ -39,7 +39,7 @@
             <ul class="blog-nav">
                 <li class="blog-nav-item"><a href="index.php">博文广场</a></li>
                 <li class="blog-nav-item active"><a href="#">发博文</a></li>
-                <li class="blog-nav-item"><a href="#">功能3</a></li>
+                <li class="blog-nav-item"><a href="get_post.php">全文阅读</a></li>
                 <li class="blog-nav-item"><a href="#">功能4</a></li>
                 <li class="blog-nav-item"><a href="#">关于我们</a></li>
             </ul>
@@ -114,7 +114,7 @@
 
         try {
             $post_controller->post($title, $user_id, $content);
-            echo "<script>alert('发博文成功！按确认返回主页。'); location.href = 'index.php';</script>";
+            echo "<script>alert('发博文成功！按确认返回博文广场。'); location.href = 'index.php';</script>";
 
         } catch (\PDOException $e) {
             //无法连接到数据库

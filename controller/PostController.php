@@ -89,10 +89,34 @@ class PostController
         }
     }
 
-    public function doesPostExist(int $post_id):bool {
+    public function doesPostExist(int $post_id): bool {
         try {
             $conn = DBController::connectToDB();
             $result = Post::doesPostExistInDB($conn, $post_id);
+            $conn = null;
+            return $result;
+        } catch (\PDOException $e) {
+            //无法连接到数据库
+            throw $e;
+        }
+    }
+
+    public function getLastPost_idAndTitle(int $post_id): array {
+        try {
+            $conn = DBController::connectToDB();
+            $result = Post::getLastPost_idAndTitleFromDB($conn, $post_id);
+            $conn = null;
+            return $result;
+        } catch (\PDOException $e) {
+            //无法连接到数据库
+            throw $e;
+        }
+    }
+
+    public function getNextPost_idAndTitle(int $post_id): array {
+        try {
+            $conn = DBController::connectToDB();
+            $result = Post::getNextPost_idAndTitleFromDB($conn, $post_id);
             $conn = null;
             return $result;
         } catch (\PDOException $e) {

@@ -23,7 +23,7 @@
             <ul class="blog-nav">
                 <li class="blog-nav-item"><a href="index.php">博文广场</a></li>
                 <li class="blog-nav-item"><a href="add_post.php">发博文</a></li>
-                <li class="blog-nav-item"><a href="#">功能3</a></li>
+                <li class="blog-nav-item"><a href="get_post.php">全文阅读</a></li>
                 <li class="blog-nav-item"><a href="#">功能4</a></li>
                 <li class="blog-nav-item"><a href="#">关于我们</a></li>
             </ul>
@@ -99,7 +99,7 @@
         try {
             if ($user_controller->signUp($nickname, $email, $password, $user_type)) {
                 echo "<script>$('#signUpForm').css('display', 'none');</script>";
-                echo "<h4 style='text-align: center; padding-top: 60px;'>注册成功！2秒后自动登录并跳转到主页</h4>";
+                echo "<h4 style='text-align: center; padding-top: 60px;'>注册成功！2秒后自动登录并跳转到博文广场</h4>";
                 $url = "index.php";
                 echo "<meta http-equiv='refresh' content='2.0; url=$url'>";
             } else {
