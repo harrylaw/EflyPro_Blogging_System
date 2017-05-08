@@ -14,4 +14,7 @@ require_once "../controller/UserController.php";
 
 UserController::getInstance()->logOut();
 
-echo "<script>location.href='index.php'</script>";
+if (isset($_GET['refer']))
+    echo "<script>location.href='" . $_GET['refer'] . "'</script>";
+else
+    echo "<script>location.href='index.php'</script>";

@@ -22,8 +22,8 @@
             </div>
             <ul class="blog-nav">
                 <li class="blog-nav-item"><a href="index.php">博文广场</a></li>
+                <li class="blog-nav-item"><a href="get_post.php">全文阅读</a></li>
                 <li class="blog-nav-item"><a href="add_post.php">发博文</a></li>
-                <li class="blog-nav-item"><a href="全文阅读">功全文阅读</a></li>
                 <li class="blog-nav-item"><a href="#">功能4</a></li>
                 <li class="blog-nav-item"><a href="#">关于我们</a></li>
             </ul>
@@ -37,7 +37,7 @@
     </nav>
 
     <div class="container">
-        <form id="signUpForm" method="post" action="sign_up_as_admin.php" class="form-login">
+        <form id="signUpForm" method="post" action="<?php echo htmlspecialchars($_SERVER["SCRIPT_NAME"]); ?>" class="form-login">
             <h2 class="form-login-heading">管理员注册</h2>
             <div id="nicknameField" class="form-group has-feedback">
                 <label for="nickname" class="sr-only">昵称</label>
@@ -83,8 +83,9 @@
      * @return string
      */
     function test_input(string $data): string {
-        $data = stripslashes($data);
         $data = htmlspecialchars($data);
+        if (!get_magic_quotes_gpc())
+            $data = addslashes($data);
         return $data;
     }
 

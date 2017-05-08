@@ -9,9 +9,6 @@
 namespace model;
 
 
-use controller\DBController;
-require_once "../controller/DBController.php";
-
 class Post
 {
     private $post_id, $title, $post_author_id, $post_content, $post_date;
@@ -55,7 +52,7 @@ class Post
         $post_raw = $result_set->fetch(\PDO::FETCH_ASSOC);
         $title = $post_raw["title"];
         $post_author_id = (int) $post_raw["post_author_id"];
-        $post_content = htmlspecialchars_decode($post_raw["post_content"]);
+        $post_content = htmlspecialchars_decode(stripslashes($post_raw["post_content"]));
         $post_date = $post_raw["post_date"];
         $post = new Post($post_id, $title, $post_author_id, $post_content, $post_date);
         return $post;

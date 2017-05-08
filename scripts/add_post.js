@@ -10,7 +10,7 @@ $(document).ready(function () {
             $("#submit").attr("disabled", "disabled");
             return true;
         } else {
-            alert("请填写所有带*项");
+            alert("请填写所有表单项");
             return false;
         }
     }
@@ -23,6 +23,7 @@ $(document).ready(function () {
         return Boolean(content);
     }
 
+    //绑定表格与函数
     $("#addPostForm").submit(function () {
         return validateForm();
     });

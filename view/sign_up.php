@@ -22,8 +22,8 @@
             </div>
             <ul class="blog-nav">
                 <li class="blog-nav-item"><a href="index.php">博文广场</a></li>
-                <li class="blog-nav-item"><a href="add_post.php">发博文</a></li>
                 <li class="blog-nav-item"><a href="get_post.php">全文阅读</a></li>
+                <li class="blog-nav-item"><a href="add_post.php">发博文</a></li>
                 <li class="blog-nav-item"><a href="#">功能4</a></li>
                 <li class="blog-nav-item"><a href="#">关于我们</a></li>
             </ul>
@@ -37,7 +37,7 @@
     </nav>
 
     <div class="container">
-        <form id="signUpForm" method="post" action="sign_up.php" class="form-login">
+        <form id="signUpForm" method="post" action="<?php echo htmlspecialchars($_SERVER["REQUEST_URI"]); ?>" class="form-login">
             <h2 class="form-login-heading">用户注册</h2>
             <div id="nicknameField" class="form-group has-feedback">
                 <label for="nickname" class="sr-only">昵称</label>
@@ -83,8 +83,9 @@
      * @return string
      */
     function test_input(string $data): string {
-        $data = stripslashes($data);
         $data = htmlspecialchars($data);
+        if (!get_magic_quotes_gpc())
+            $data = addslashes($data);
         return $data;
     }
 
@@ -99,9 +100,15 @@
         try {
             if ($user_controller->signUp($nickname, $email, $password, $user_type)) {
                 echo "<script>$('#signUpForm').css('display', 'none');</script>";
-                echo "<h4 style='text-align: center; padding-top: 60px;'>注册成功！2秒后自动登录并跳转到博文广场</h4>";
-                $url = "index.php";
-                echo "<meta http-equiv='refresh' content='2.0; url=$url'>";
+
+                if (isset($_GET['refer'])){
+                    echo "<h4 style='text-align: center; padding-top: 60px;'>注册成功！2秒后自动登录并跳转到注册前页面</h4>";
+                    echo "<script>setTimeout(function() {location.href='" . $_GET['refer'] . "'}, 2000)</script>";
+                } else {
+                    echo "<h4 style='text-align: center; padding-top: 60px;'>注册成功！2秒后自动登录并跳转到博文广场</h4>";
+                    $url = "index.php";
+                    echo "<meta http-equiv='refresh' content='2.0; url=$url'>";
+                }
             } else {
                 echo "<script>$('#signUpForm').css('display', 'none');</script>";
                 echo "<h4 style='text-align: center; padding-top: 60px;'>注册失败！此邮箱或昵称已被注册，请换一个邮箱或昵称再试/h4>";

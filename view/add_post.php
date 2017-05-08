@@ -38,8 +38,8 @@
             </div>
             <ul class="blog-nav">
                 <li class="blog-nav-item"><a href="index.php">博文广场</a></li>
-                <li class="blog-nav-item active"><a href="#">发博文</a></li>
                 <li class="blog-nav-item"><a href="get_post.php">全文阅读</a></li>
+                <li class="blog-nav-item active"><a href="#">发博文</a></li>
                 <li class="blog-nav-item"><a href="#">功能4</a></li>
                 <li class="blog-nav-item"><a href="#">关于我们</a></li>
             </ul>
@@ -63,7 +63,7 @@
         </div>
 
         <div class="row">
-            <form id="addPostForm" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post" class="form-horizontal">
+            <form id="addPostForm" action="<?php echo htmlspecialchars($_SERVER["SCRIPT_NAME"]);?>" method="post" class="form-horizontal">
                 <div class="form-group">
                     <label for="title" class="control-label col-sm-1">标题：</label>
                     <div class="col-sm-11">
@@ -100,9 +100,9 @@
     require_once "../controller/PostController.php";
 
     function test_input(string $data): string {
-        $data = stripslashes($data);
         $data = htmlspecialchars($data);
-        $data = str_replace("'", "&apos;", $data);
+        if (!get_magic_quotes_gpc())
+            $data = addslashes($data);
         return $data;
     }
 
@@ -118,8 +118,7 @@
 
         } catch (\PDOException $e) {
             //无法连接到数据库
-            echo $e;
-            //echo "<script>alert('发博文失败！服务器出错，请联系技术人员。')</script>";
+            echo "<script>alert('发博文失败！服务器出错，请联系技术人员。')</script>";
         }
     }
 ?>

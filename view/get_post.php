@@ -50,25 +50,23 @@
             </div>
             <ul class="blog-nav">
                 <li class="blog-nav-item"><a href="index.php">博文广场</a></li>
-                <li class="blog-nav-item"><a href="add_post.php">发博文</a></li>
                 <li class="blog-nav-item active"><a href="#">全文阅读</a></li>
+                <li class="blog-nav-item"><a href="add_post.php">发博文</a></li>
                 <li class="blog-nav-item"><a href="#">功能4</a></li>
                 <li class="blog-nav-item"><a href="#">关于我们</a></li>
             </ul>
             <ul class="navbar-right">
                 <?php
                 if (!$user_id) {
-                    echo "<li class='blog-nav-item'><a href='sign_up.php'><span class='glyphicon glyphicon-user'></span> 注册</a></li>";
-                    echo "<li class='blog-nav-item'><a href='log_in.php'><span class='glyphicon glyphicon-log-in'></span> 登录</a></li>";
+                    echo "<li class='blog-nav-item'><a href='sign_up.php?refer=get_post.php?post_id=$post_id'><span class='glyphicon glyphicon-user'></span> 注册</a></li>";
+                    echo "<li class='blog-nav-item'><a href='log_in.php?refer=get_post.php?post_id=$post_id'><span class='glyphicon glyphicon-log-in'></span> 登录</a></li>";
                 } else {
                     if ($user_type == "a") {
                         echo "<li class='blog-nav-userinfo'><span>管理员 <strong>$nickname</strong> ，欢迎回来！</span></li>";
-                        echo "<li class='blog-nav-item'><a href='log_out.php'><span class='glyphicon glyphicon-log-out'></span>注销</a></li>";
-                    }
-                    else {
+                    } else {
                         echo "<li class='blog-nav-userinfo'><span>用户 <strong>$nickname</strong> ，欢迎回来！</span></li>";
-                        echo "<li class='blog-nav-item'><a href='log_out.php'><span class='glyphicon glyphicon-log-out'></span>注销</a></li>";
                     }
+                    echo "<li class='blog-nav-item'><a href='log_out.php?refer=get_post.php?post_id=$post_id'><span class='glyphicon glyphicon-log-out'></span>注销</a></li>";
                 }
                 ?>
             </ul>
@@ -78,8 +76,8 @@
     <div class="container">
 
         <div class="blog-header">
-            <h1 class="blog-title">EFlyPro睿江云博客</h1>
-            <p class="lead blog-description">睿江云粉丝的乐园</p>
+            <h1 class="blog-title">全文阅读</h1>
+            <p class="lead blog-description">EFlyPro睿江云博客</p>
         </div>
 
         <div class="row" id="content">
@@ -89,7 +87,6 @@
                     require_once "../controller/UserController.php";
                     if (isset($post_id)) {
                         $post = $post_controller->getPostById($post_id);
-                        $post_id = $post->getPost_id();
                         $title = $post->getTitle();
                         $post_content = $post->getPost_content();
                         $post_author_id = $post->getPost_author_id();
@@ -125,8 +122,28 @@
                         echo "<p class='blog-post-meta'>发表时间：$post_date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作者：$author_nickname</p>\n";
                         echo  $post_content . "\n";
                         echo "</div>\n";
+                        echo "<hr>\n";
                     }
                 ?>
+
+                <div class="comment">
+                    <form id="commentForm" action="<?php echo htmlspecialchars($_SERVER["REQUEST_URI"]);?>" method="post">
+                        <div class="form-group">
+                            <label for="comment">评论区</label>
+                            <span id="words_count" class="small" style="float: right">还可以输入：255字</span>
+                            <textarea id="comment" name="comment" rows="5" class="form-control" placeholder="字数限制：255字"></textarea>
+                        </div>
+                        <input type="submit" id="submit" value="发表评论" class="btn btn-default btn-primary col-sm-offset-5" style="margin-bottom: 60px;">
+                    </form>
+                    <?php
+                        if (!$user_id) {
+                            echo "<script>document.getElementById('comment').disabled = 'disabled';</script>";
+                            echo "<script>document.getElementById('comment').placeholder = '登录后方可发表评论';</script>";
+                            echo "<script>document.getElementById('submit').style.display = 'none';</script>";
+                            echo "<p class='text-center small'>现在 <a href='log_in.php?refer=get_post.php?post_id=$post_id'>登录</a> 或 <a href='sign_up.php?refer=get_post.php?post_id=$post_id'>注册</a></p>";
+                        }
+                    ?>
+                </div>
             </div><!-- /.blog-main -->
 
             <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
@@ -187,5 +204,33 @@
     <script src="../scripts/jquery-3.2.1.min.js"></script>
     <!-- Bootstrap核心JavaScript -->
     <script src="../scripts/bootstrap.min.js"></script>
+    <script src="../scripts/get_post.js"></script>
 </body>
 </html>
+<?php
+    use controller\CommentController;
+    require_once "../controller/CommentController.php";
+
+    function test_input(string $data): string {
+        $data = htmlspecialchars($data);
+        if (!get_magic_quotes_gpc())
+            $data = addslashes($data);
+        return $data;
+    }
+
+    //入口
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $comment_content = test_input($_POST["comment"]);
+        $comment_controller = CommentController::getInstance();
+
+        try {
+            $comment_controller->comment($comment_content, $post_id, $user_id);
+            echo "<script>alert('发表评论成功！');</script>";
+            echo "<script>location.reload();</script>";
+        } catch (\PDOException $e) {
+            //无法连接到数据库
+            echo $e;
+            //echo "<script>alert('发表评论失败！服务器出错，请联系技术人员。')</script>";
+        }
+    }
+?>

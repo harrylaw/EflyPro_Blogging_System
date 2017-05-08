@@ -50,25 +50,23 @@
                 </div>
                 <ul class="blog-nav">
                     <li class="blog-nav-item active"><a href="#">博文广场</a></li>
-                    <li class="blog-nav-item"><a href="add_post.php">发博文</a></li>
                     <li class="blog-nav-item"><a href="get_post.php">全文阅读</a></li>
+                    <li class="blog-nav-item"><a href="add_post.php">发博文</a></li>
                     <li class="blog-nav-item"><a href="#">功能4</a></li>
                     <li class="blog-nav-item"><a href="#">关于我们</a></li>
                 </ul>
                 <ul class="navbar-right">
                     <?php
                         if (!$user_id) {
-                            echo "<li class='blog-nav-item'><a href='sign_up.php'><span class='glyphicon glyphicon-user'></span> 注册</a></li>";
-                            echo "<li class='blog-nav-item'><a href='log_in.php'><span class='glyphicon glyphicon-log-in'></span> 登录</a></li>";
+                            echo "<li class='blog-nav-item'><a href='sign_up.php?refer=index.php?page=$current_page'><span class='glyphicon glyphicon-user'></span> 注册</a></li>";
+                            echo "<li class='blog-nav-item'><a href='log_in.php?refer=index.php?page=$current_page'><span class='glyphicon glyphicon-log-in'></span> 登录</a></li>";
                         } else {
                             if ($user_type == "a") {
                                 echo "<li class='blog-nav-userinfo'><span>管理员 <strong>$nickname</strong> ，欢迎回来！</span></li>";
-                                echo "<li class='blog-nav-item'><a href='log_out.php'><span class='glyphicon glyphicon-log-out'></span>注销</a></li>";
-                            }
-                            else {
+                            } else {
                                 echo "<li class='blog-nav-userinfo'><span>用户 <strong>$nickname</strong> ，欢迎回来！</span></li>";
-                                echo "<li class='blog-nav-item'><a href='log_out.php'><span class='glyphicon glyphicon-log-out'></span>注销</a></li>";
                             }
+                            echo "<li class='blog-nav-item'><a href='log_out.php?refer=index.php?page=$current_page'><span class='glyphicon glyphicon-log-out'></span>注销</a></li>";
                         }
                     ?>
                 </ul>
@@ -78,8 +76,8 @@
     <div class="container">
 
         <div class="blog-header">
-            <h1 class="blog-title">EFlyPro睿江云博客</h1>
-            <p class="lead blog-description">睿江云粉丝的乐园</p>
+            <h1 class="blog-title">博文广场</h1>
+            <p class="lead blog-description">EFlyPro睿江云博客</p>
         </div>
 
         <div class="row" id="content">

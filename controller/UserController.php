@@ -7,10 +7,10 @@
  */
 
 namespace controller;
-use model\Post;
 use model\User;
 require_once "../model/User.php";
 require_once "DBController.php";
+
 
 class UserController
 {

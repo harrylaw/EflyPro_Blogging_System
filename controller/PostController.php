@@ -61,7 +61,7 @@ class PostController
                 $post_id = (int) $posts_array_raw[$i]["post_id"];
                 $title = $posts_array_raw[$i]["title"];
                 $post_author_id = (int) $posts_array_raw[$i]["post_author_id"];
-                $post_content = htmlspecialchars_decode($posts_array_raw[$i]["post_content"]);
+                $post_content = htmlspecialchars_decode(stripcslashes($posts_array_raw[$i]["post_content"]));
                 $post_date = $posts_array_raw[$i]["post_date"];
                 $post = new Post($post_id, $title, $post_author_id, $post_content, $post_date);
                 $this->posts_array[$i] = $post;
@@ -73,11 +73,11 @@ class PostController
         }
     }
 
-    public function getPost(int $index) {
+    public function getPost(int $index): Post {
         return $this->posts_array[$index];
     }
 
-    public function getPostById(int $post_id) {
+    public function getPostById(int $post_id): Post {
         try {
             $conn = DBController::connectToDB();
             $post = Post::getPostById($conn, $post_id);
