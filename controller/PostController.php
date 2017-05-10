@@ -15,7 +15,7 @@ require_once "DBController.php";
 class PostController
 {
     private static $instance = null;
-    private $posts_array;
+    private $posts = array();
 
     private function __construct() {
     }
@@ -49,32 +49,27 @@ class PostController
         }
     }
 
-
-    public function readPosts(int $current_page, int $posts_on_each_page, int $posts_on_current_page) {
+    public function readPosts(int $current_page, int $posts_on_each_page, int $posts_on_current_page): array {
         try {
             $conn = DBController::connectToDB();
             $offset = ($current_page - 1) * $posts_on_each_page;
-            $posts_array_raw = Post::readPostsFromDB($conn, $offset, $posts_on_current_page);
+            $posts_raw = Post::readPostsFromDB($conn, $offset, $posts_on_current_page);
             $conn = null;
 
-            for ($i=0; $i < $posts_on_current_page; $i++) {
-                $post_id = (int) $posts_array_raw[$i]["post_id"];
-                $title = $posts_array_raw[$i]["title"];
-                $post_author_id = (int) $posts_array_raw[$i]["post_author_id"];
-                $post_content = htmlspecialchars_decode(stripcslashes($posts_array_raw[$i]["post_content"]));
-                $post_date = $posts_array_raw[$i]["post_date"];
+            foreach ($posts_raw as $post_raw) {
+                $post_id = (int) $post_raw["post_id"];
+                $title = $post_raw["title"];
+                $post_author_id = (int) $post_raw["post_author_id"];
+                $post_content = htmlspecialchars_decode(stripcslashes($post_raw["post_content"]));
+                $post_date = $post_raw["post_date"];
                 $post = new Post($post_id, $title, $post_author_id, $post_content, $post_date);
-                $this->posts_array[$i] = $post;
+                array_push($this->posts, $post);
             }
-            //return $this->posts_array;
+            return $this->posts;
         } catch (\PDOException $e) {
             //无法连接到数据库
             throw $e;
         }
-    }
-
-    public function getPost(int $index): Post {
-        return $this->posts_array[$index];
     }
 
     public function getPostById(int $post_id): Post {

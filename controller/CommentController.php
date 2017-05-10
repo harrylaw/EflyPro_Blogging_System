@@ -15,7 +15,7 @@ require_once "DBController.php";
 class CommentController
 {
     private static $instance = null;
-    private $comment;
+    private $comments = array();
 
     private function __construct() {
     }
@@ -31,6 +31,15 @@ class CommentController
             $conn = DBController::connectToDB();
             Comment::addCommentToDB($conn, $comment_content, $comment_post_id, $comment_author_id);
             $conn = null;
+        } catch (\PDOException $e) {
+            //无法连接到数据库
+            throw $e;
+        }
+    }
+
+    public function readComments() {
+        try {
+
         } catch (\PDOException $e) {
             //无法连接到数据库
             throw $e;

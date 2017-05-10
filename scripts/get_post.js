@@ -18,15 +18,15 @@ $(document).ready(function () {
         }
     }
     function isCommentEmpty() {
-        var comment = testInput($("#comment").val());
+        var comment = testInput($("#comment_content").val());
         return !Boolean(comment);
     }
     function isCommentOversized() {
-        var comment = testInput($("#comment").val());
+        var comment = testInput($("#comment_content").val());
         return comment.length > max_size;
     }
     function countWords() {
-        var words_count = testInput($("#comment").val()).length;
+        var words_count = testInput($("#comment_content").val()).length;
         var remaining_size = max_size - words_count;
         $("#words_count").html("还可以输入：" + remaining_size + "字");
     }
@@ -36,6 +36,6 @@ $(document).ready(function () {
     $("#commentForm").submit(function () {
         return validateCommentForm();
     });
-    $("#comment").keyup(countWords)
+    $("#comment_content").keyup(countWords)
         .change(countWords); //用鼠标复制时字数统计也会改变
 });

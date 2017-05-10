@@ -33,8 +33,8 @@ class Post
         $sql = "SELECT * FROM posts ORDER BY post_id DESC LIMIT $offset, $posts_on_current_page";
 
         $result_set = $conn->query($sql);
-        $posts_array_raw = $result_set->fetchAll(\PDO::FETCH_ASSOC);
-        return $posts_array_raw;
+        $posts_raw = $result_set->fetchAll(\PDO::FETCH_ASSOC);
+        return $posts_raw;
     }
 
     public static function countPosts(\PDO $conn): int {

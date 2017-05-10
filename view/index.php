@@ -35,11 +35,11 @@
     require_once "../controller/PostController.php";
     $post_controller = PostController::getInstance();
     $total_posts = $post_controller->countPosts();
-    $posts_on_each_page = 3;
+    $posts_on_each_page = 4;
     $total_pages = ceil($total_posts/$posts_on_each_page);
     //当current_page有意义时
     if ($current_page > 0 && $current_page <= $total_pages) {
-        $posts_on_current_page = ($current_page == $total_pages) ? ($total_posts - ($current_page - 1) * 3) : 3;
+        $posts_on_current_page = ($current_page == $total_pages) ? ($total_posts - ($current_page - 1) * $posts_on_each_page) : $posts_on_each_page;
     }
 ?>
 <body>
@@ -86,9 +86,8 @@
                     use controller\UserController;
                     require_once "../controller/UserController.php";
                     if (isset($posts_on_current_page)) {
-                        $post_controller->readPosts($current_page, $posts_on_each_page, $posts_on_current_page);
-                        for ($i = 0; $i < $posts_on_current_page; $i++) {
-                            $post = $post_controller->getPost($i);
+                        $posts = $post_controller->readPosts($current_page, $posts_on_each_page, $posts_on_current_page);
+                        foreach ($posts as $post){ //$post is of class Post
                             $post_id = $post->getPost_id();
                             $title = $post->getTitle();
                             $post_content = $post->getPost_content();
@@ -107,6 +106,26 @@
                             echo "</div>\n";
                             echo "<hr>\n";
                         }
+//                        for ($i = 0; $i < $posts_on_current_page; $i++) {
+//                            $post = $post_controller->getPost($i);
+//                            $post_id = $post->getPost_id();
+//                            $title = $post->getTitle();
+//                            $post_content = $post->getPost_content();
+//                            $striped_and_extracted_content = strip_tags(substr($post_content, 0, 800), "<h1><h2><h3><h4><h5><h6>");
+//                            $post_author_id = $post->getPost_author_id();
+//                            $user_controller = UserController::getInstance();
+//                            $author_nickname = $user_controller->getNicknameById($post_author_id);
+//                            $post_date = $post->getPost_date();
+//                            echo "<hr>\n";
+//                            echo "<div class='blog-post'>\n";
+//                            echo "<h2 class='blog-post-title'>$title</h2>\n\n";
+//                            echo "<p class='blog-post-meta'>发表时间：$post_date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作者：$author_nickname</p>\n";
+//                            //echo  $post_content . "\n";
+//                            echo  "<p>" . $striped_and_extracted_content . "\n</p>\n";
+//                            echo "<a href='get_post.php?post_id=$post_id'>阅读全文</a>\n";
+//                            echo "</div>\n";
+//                            echo "<hr>\n";
+//                        }
                     }
                 ?>
 

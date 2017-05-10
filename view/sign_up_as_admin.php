@@ -83,6 +83,7 @@
      * @return string
      */
     function test_input(string $data): string {
+        $data = trim($data);
         $data = htmlspecialchars($data);
         if (!get_magic_quotes_gpc())
             $data = addslashes($data);
@@ -100,9 +101,9 @@
         try {
             if ($user_controller->signUp($nickname, $email, $password, $user_type)) {
                 echo "<script>$('#signUpForm').css('display', 'none');</script>";
-                echo "<h4 style='text-align: center; padding-top: 60px;'>注册成功！2秒后自动登录并跳转到博文广场</h4>";
+                echo "<h4 style='text-align: center; padding-top: 60px;'>注册成功！1.5秒后自动登录并跳转到博文广场</h4>";
                 $url = "index.php";
-                echo "<meta http-equiv='refresh' content='2.0; url=$url'>";
+                echo "<meta http-equiv='refresh' content='1.5; url=$url'>";
             } else {
                 echo "<script>$('#signUpForm').css('display', 'none');</script>";
                 echo "<h4 style='text-align: center; padding-top: 60px;'>注册失败！此邮箱或昵称已被注册，请换一个邮箱或昵称再试/h4>";

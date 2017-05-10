@@ -126,19 +126,19 @@
                     }
                 ?>
 
-                <div class="comment">
+                <div class="comment" id="comment">
                     <form id="commentForm" action="<?php echo htmlspecialchars($_SERVER["REQUEST_URI"]);?>" method="post">
                         <div class="form-group">
-                            <label for="comment">评论区</label>
+                            <label for="comment_content">评论区</label>
                             <span id="words_count" class="small" style="float: right">还可以输入：255字</span>
-                            <textarea id="comment" name="comment" rows="5" class="form-control" placeholder="字数限制：255字"></textarea>
+                            <textarea id="comment_content" name="comment_content" rows="5" class="form-control" placeholder="字数限制：255字"></textarea>
                         </div>
                         <input type="submit" id="submit" value="发表评论" class="btn btn-default btn-primary col-sm-offset-5" style="margin-bottom: 60px;">
                     </form>
                     <?php
                         if (!$user_id) {
-                            echo "<script>document.getElementById('comment').disabled = 'disabled';</script>";
-                            echo "<script>document.getElementById('comment').placeholder = '登录后方可发表评论';</script>";
+                            echo "<script>document.getElementById('comment_content').disabled = 'disabled';</script>";
+                            echo "<script>document.getElementById('comment_content').placeholder = '登录后方可发表评论';</script>";
                             echo "<script>document.getElementById('submit').style.display = 'none';</script>";
                             echo "<p class='text-center small'>现在 <a href='log_in.php?refer=get_post.php?post_id=$post_id'>登录</a> 或 <a href='sign_up.php?refer=get_post.php?post_id=$post_id'>注册</a></p>";
                         }
@@ -212,6 +212,7 @@
     require_once "../controller/CommentController.php";
 
     function test_input(string $data): string {
+        $data = trim($data);
         $data = htmlspecialchars($data);
         if (!get_magic_quotes_gpc())
             $data = addslashes($data);
@@ -220,7 +221,7 @@
 
     //入口
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $comment_content = test_input($_POST["comment"]);
+        $comment_content = test_input($_POST["comment_content"]);
         $comment_controller = CommentController::getInstance();
 
         try {
