@@ -26,10 +26,10 @@ class PostController
         return self::$instance;
     }
 
-    public function post(string $title, int $post_author_id, string $post_content) {
+    public function post(string $title, int $post_author_id, string $post_content, int $post_category_id) {
         try {
             $conn = DBController::connectToDB();
-            Post::addPostToDB($conn, $title, $post_author_id, $post_content);
+            Post::addPostToDB($conn, $title, $post_author_id, $post_content, $post_category_id);
             $conn = null;
         } catch (\PDOException $e) {
             //无法连接到数据库
@@ -58,11 +58,12 @@ class PostController
 
             foreach ($posts_raw as $post_raw) {
                 $post_id = (int) $post_raw["post_id"];
-                $title = $post_raw["title"];
+                $title = stripslashes($post_raw["title"]);
                 $post_author_id = (int) $post_raw["post_author_id"];
-                $post_content = htmlspecialchars_decode(stripcslashes($post_raw["post_content"]));
+                $post_content = htmlspecialchars_decode(stripslashes($post_raw["post_content"]));
                 $post_date = $post_raw["post_date"];
-                $post = new Post($post_id, $title, $post_author_id, $post_content, $post_date);
+                $post_category_id = (int) $post_raw["post_category_id"];
+                $post = new Post($post_id, $title, $post_author_id, $post_content, $post_date, $post_category_id);
                 array_push($this->posts, $post);
             }
             return $this->posts;

@@ -11,7 +11,7 @@
     <meta name="description" content="EflyPro睿江云博客系统">
     <meta name="author" content="EflyPro睿江云">
 
-    <title>发博文|睿江云EflyPro博客</title>
+    <title>发博文 | 睿江云EflyPro博客</title>
 
     <!-- Bootstrap核心CSS -->
     <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
@@ -37,14 +37,18 @@
 <body>
     <nav class="blog-masthead navbar-fixed-top">
         <div class="container">
-            <div class="blog-nav-header">
+            <header class="blog-nav-header">
                 <a class="blog-nav-brand" href="index.php">EflyPro博客</a>
-            </div>
+            </header>
             <ul class="blog-nav">
                 <li class="blog-nav-item"><a href="index.php">博文广场</a></li>
                 <li class="blog-nav-item"><a href="get_post.php">全文阅读</a></li>
                 <li class="blog-nav-item"><a href="category_view.php">分类阅读</a></li>
-                <li class="blog-nav-item active"><a href="add_post.php">发博文</a></li>
+                <?php
+                    if ($user_type == 'a') {
+                        echo "<li class='blog-nav-item active'><a href='add_post.php'>发博文</a></li>";
+                    }
+                ?>
                 <li class="blog-nav-item"><a href="#">关于我们</a></li>
             </ul>
             <ul class="navbar-right">
@@ -57,14 +61,14 @@
     </nav>
 
     <div class="container">
-        <div class="blog-header">
+        <header class="blog-header">
             <h1 class="blog-title">发博文</h1>
             <p id="userTypeInfoPr" class="lead blog-description">
                 <?php
                     echo "管理员 <bold>$nickname</bold> ，欢迎使用发博文功能";
                 ?>
             </p>
-        </div>
+        </header>
 
         <div class="row">
             <form id="addPostForm" action="<?php echo htmlspecialchars($_SERVER["SCRIPT_NAME"]);?>" method="post" class="form-horizontal">
@@ -117,13 +121,14 @@
     }
 
     //入口
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    if ($_SERVER["REQUEST_METHOD"] == "POST" && $user_type == 'a') {
         $title = test_input($_POST["title"]);
-        $content = test_input($_POST["post_content"]);
+        $post_content = test_input($_POST["post_content"]);
+        $post_category_id = 0;
         $post_controller = PostController::getInstance();
 
         try {
-            $post_controller->post($title, $user_id, $content);
+            $post_controller->post($title, $user_id, $post_content, $post_category_id);
             echo "<script>alert('发博文成功！按确认返回博文广场。'); location.href = 'index.php';</script>";
 
         } catch (\PDOException $e) {

@@ -11,19 +11,25 @@ namespace model;
 
 class Post
 {
-    private $post_id, $title, $post_author_id, $post_content, $post_date;
+    private $post_id, $title, $post_author_id, $post_content, $post_date, $post_category_id;
 
-    public function __construct(int $post_id, string $title, int $post_author_id, string $post_content, string $post_date){
+    public function __construct(int $post_id, string $title, int $post_author_id, string $post_content, string $post_date, int $post_category_id){
         $this->post_id = $post_id;
         $this->title = $title;
         $this->post_author_id = $post_author_id;
         $this->post_content = $post_content;
         $this->post_date = $post_date;
+        $this->post_category_id = $post_category_id;
     }
 
-    public static function addPostToDB(\PDO $conn, string $title, int $post_author_id, string $post_content) {
-        $sql = "INSERT INTO posts (title, post_author_id, post_content)
+    public static function addPostToDB(\PDO $conn, string $title, int $post_author_id, string $post_content, int $post_category_id) {
+        if ($post_category_id) {
+            $sql = "INSERT INTO posts (title, post_author_id, post_content, post_category_id)
+                VALUES ('$title', $post_author_id, '$post_content', $post_category_id)";
+        } else {
+            $sql = "INSERT INTO posts (title, post_author_id, post_content)
                 VALUES ('$title', $post_author_id, '$post_content')";
+        }
 
         // use exec() because no results are returned
         $conn->exec($sql);
@@ -50,11 +56,12 @@ class Post
 
         $result_set = $conn->query($sql);
         $post_raw = $result_set->fetch(\PDO::FETCH_ASSOC);
-        $title = $post_raw["title"];
+        $title = stripslashes($post_raw["title"]);
         $post_author_id = (int) $post_raw["post_author_id"];
         $post_content = htmlspecialchars_decode(stripslashes($post_raw["post_content"]));
         $post_date = $post_raw["post_date"];
-        $post = new Post($post_id, $title, $post_author_id, $post_content, $post_date);
+        $post_category_id = (int) $post_raw["post_category_id"];
+        $post = new Post($post_id, $title, $post_author_id, $post_content, $post_date, $post_category_id);
         return $post;
     }
 
@@ -72,7 +79,7 @@ class Post
         if ($result_set->rowCount()) {
             $result_raw = $result_set->fetch(\PDO::FETCH_ASSOC);
             $last_post_id = (int) $result_raw["post_id"];
-            $last_title = $result_raw["title"];
+            $last_title = stripslashes($result_raw["title"]);
             return array("post_id" => $last_post_id, "title" => $last_title);
         } else {
             return array("post_id" => 0);
@@ -86,7 +93,7 @@ class Post
         if ($result_set->rowCount()) {
             $result_raw = $result_set->fetch(\PDO::FETCH_ASSOC);
             $next_post_id = (int) $result_raw["post_id"];
-            $next_title = $result_raw["title"];
+            $next_title = stripslashes($result_raw["title"]);
             return array("post_id" => $next_post_id, "title" => $next_title);
         } else {
             return array("post_id" => 0);
@@ -111,5 +118,9 @@ class Post
 
     public function getPost_date(): string {
         return $this->post_date;
+    }
+
+    public function getPost_category_id(): int {
+        return $this->post_category_id;
     }
 }

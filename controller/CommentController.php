@@ -48,7 +48,7 @@ class CommentController
             } else {
                 foreach ($comments_raw as $comment_raw) {
                     $comment_id = (int) $comment_raw["comment_id"];
-                    $comment_content = stripcslashes($comment_raw["comment_content"]);
+                    $comment_content = stripslashes($comment_raw["comment_content"]);
                     $comment_post_id = (int) $comment_raw["comment_post_id"];
                     $comment_author_id = (int) $comment_raw["comment_author_id"];
                     $comment_date = $comment_raw["comment_date"];

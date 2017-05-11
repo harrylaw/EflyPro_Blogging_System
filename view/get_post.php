@@ -11,7 +11,7 @@
     <meta name="description" content="EflyPro睿江云博客系统">
     <meta name="author" content="EflyPro睿江云">
 
-    <title>全文阅读|睿江云EflyPro博客</title>
+    <title>全文阅读 | 睿江云EflyPro博客</title>
 
     <!-- Bootstrap核心CSS -->
     <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
@@ -54,14 +54,18 @@
 <body>
     <nav class="blog-masthead navbar-fixed-top">
         <div class="container">
-            <div class="blog-nav-header">
+            <header class="blog-nav-header">
                 <a class="blog-nav-brand" href="index.php">EflyPro博客</a>
-            </div>
+            </header>
             <ul class="blog-nav">
                 <li class="blog-nav-item"><a href="index.php">博文广场</a></li>
                 <li class="blog-nav-item active"><a href="get_post.php">全文阅读</a></li>
                 <li class="blog-nav-item"><a href="category_view.php">分类阅读</a></li>
-                <li class="blog-nav-item"><a href="add_post.php">发博文</a></li>
+                <?php
+                    if ($user_type == 'a') {
+                        echo "<li class='blog-nav-item'><a href='add_post.php'>发博文</a></li>";
+                    }
+                ?>
                 <li class="blog-nav-item"><a href="#">关于我们</a></li>
             </ul>
             <ul class="navbar-right">
@@ -83,14 +87,13 @@
     </nav>
 
     <div class="container">
-
-        <div class="blog-header">
+        <header class="blog-header">
             <h1 class="blog-title">全文阅读</h1>
             <p class="lead blog-description">EFlyPro睿江云博客</p>
-        </div>
+        </header>
 
         <div class="row" id="content">
-            <div class="col-sm-8 blog-main">
+            <section class="col-sm-8 blog-main">
                 <?php
 
                     if (isset($post_id)) {
@@ -107,33 +110,29 @@
                         if ($last_post_id = $last_post_id_and_title["post_id"]) {
                             $last_title = $last_post_id_and_title["title"];
                             echo "<a href='get_post.php?post_id=$last_post_id'>上一篇: $last_title</a>\n";
-                            echo "<br>\n";
                         } else {
                             echo "<span>上一篇: 没有上一篇了</span>\n";
-                            echo "<br>\n";
                         }
+                        echo "<br>\n";
                         if ($next_post_id = $next_post_id_and_title["post_id"]) {
                             $next_title = $next_post_id_and_title["title"];
                             echo "<a href='get_post.php?post_id=$next_post_id'>下一篇: $next_title</a>\n";
-                            echo "<br>\n";
                         } else {
                             echo "<span>下一篇: 没有下一篇了</span>\n";
-                            echo "<br>\n";
                         }
+                        echo "<br><br>\n";
 
-                        echo "<hr>\n";
 
                         //打印博文
-                        echo "<div class='blog-post'>\n";
+                        echo "<article class='blog-post'>\n";
                         echo "<h2 class='blog-post-title'>$title</h2>\n\n";
                         echo "<p class='blog-post-meta'>发表时间：$post_date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作者：$author_nickname</p>\n";
                         echo  $post_content . "\n";
-                        echo "</div>\n";
-                        echo "<hr>\n";
+                        echo "</article>\n";
                     }
                 ?>
 
-                <div class="comment" id="comment">
+                <section class="comment" id="comment">
                     <?php
                         if(isset($post_id)) {
                             $comments = $comment_controller->readCommentsByPost_id($post_id);
@@ -173,45 +172,43 @@
                             echo "<p class='text-center small'>现在 <a href='log_in.php?refer=get_post.php?post_id=$post_id'>登录</a> 或 <a href='sign_up.php?refer=get_post.php?post_id=$post_id'>注册</a></p>";
                         }
                     ?>
-                </div>
-            </div><!-- /.blog-main -->
+                </section>
+            </section><!-- /.blog-main -->
 
-            <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
-                <div class="sidebar-module sidebar-module-inset">
+            <aside class="col-sm-3 col-sm-offset-1 blog-sidebar">
+                <section class="sidebar-module sidebar-module-inset">
                     <h4>关于我们</h4>
                     <p><img width="215px" title="睿江科技" src="../image/logo.png" /></p>
-
                     <p><a href="#"><strong>睿江科技研发部</strong></a></p>
-
                     <p><strong>官方网站：</strong><a href="http://www.eflypro.com/" target="_blank">EflyPro网站</a></p>
-
                     <p><strong>交流QQ群：</strong><a target="_blank" title="点击申请加入EflyPro官方交流群" href="http://shang.qq.com/wpa/qunwpa?idkey=76e5ce21ff1aab74f9b65b58e88ad87e5dac5a8c7fdc4b0a0b5f26811209190f"> 3373916670</a></p>
-                </div>
-                <div class="sidebar-module">
+                </section>
+
+                <section class="sidebar-module">
                     <h4>分类</h4>
                     <ol class="list-unstyled">
-                        <li><a href="#">March 2014</a></li>
-                        <li><a href="#">February 2014</a></li>
-                        <li><a href="#">January 2014</a></li>
-                        <li><a href="#">December 2013</a></li>
-                        <li><a href="#">November 2013</a></li>
-                        <li><a href="#">October 2013</a></li>
-                        <li><a href="#">September 2013</a></li>
-                        <li><a href="#">August 2013</a></li>
-                        <li><a href="#">July 2013</a></li>
-                        <li><a href="#">June 2013</a></li>
-                        <li><a href="#">May 2013</a></li>
-                        <li><a href="#">April 2013</a></li>
+                        <?php
+                            use controller\CategoryController;
+                            require_once "../controller/CategoryController.php";
+                            $category_controller = CategoryController::getInstance();
+                            $categories = $category_controller->readCategories();
+                            foreach ($categories as $category) {
+                                $category_id = $category->getCategory_id();
+                                $category_name = $category->getCategory_name();
+                                echo "<li><a href='category_view.php?category_id=$category_id'>$category_name</a></li>\n";
+                            }
+                        ?>
                     </ol>
-                </div>
-                <div class="sidebar-module">
+                </section>
+
+                <section class="sidebar-module">
                     <h4>友情链接</h4>
                     <ol class="list-unstyled">
                         <li><a href="#">GitHub</a></li>
                         <li><a href="#">Twitter</a></li>
                         <li><a href="#">Facebook</a></li>
                     </ol>
-                </div>
+                </section>
 
                 <button type="button" class="btn btn-default btn-md scroll-to-top">
                     <span class="glyphicon glyphicon-triangle-top"></span>
@@ -219,7 +216,7 @@
                 <button type="button" class="btn btn-default btn-md scroll-to-bottom">
                     <span class="glyphicon glyphicon-triangle-bottom"></span>
                 </button>
-            </div><!-- /.blog-sidebar -->
+            </aside><!-- /.blog-sidebar -->
         </div><!-- /.row -->
         <?php
             //当post_id没意义时

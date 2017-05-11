@@ -8,7 +8,7 @@
     <meta name="description" content="EflyPro睿江云博客系统">
     <meta name="author" content="EflyPro睿江云">
 
-    <title>注册|睿江云EflyPro博客</title>
+    <title>注册 | 睿江云EflyPro博客</title>
 
     <!-- Bootstrap核心CSS -->
     <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
@@ -26,14 +26,13 @@
 <body>
     <nav class="blog-masthead navbar-fixed-top">
         <div class="container">
-            <div class="blog-nav-header">
+            <header class="blog-nav-header">
                 <a class="blog-nav-brand" href="index.php">EflyPro博客</a>
-            </div>
+            </header>
             <ul class="blog-nav">
                 <li class="blog-nav-item"><a href="index.php">博文广场</a></li>
                 <li class="blog-nav-item"><a href="get_post.php">全文阅读</a></li>
                 <li class="blog-nav-item"><a href="category_view.php">分类阅读</a></li>
-                <li class="blog-nav-item"><a href="add_post.php">发博文</a></li>
                 <li class="blog-nav-item"><a href="#">关于我们</a></li>
             </ul>
             <ul class="navbar-right">
@@ -95,8 +94,6 @@
     function test_input(string $data): string {
         $data = trim($data);
         $data = htmlspecialchars($data);
-        if (!get_magic_quotes_gpc())
-            $data = addslashes($data);
         return $data;
     }
 
