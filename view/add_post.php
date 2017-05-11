@@ -15,6 +15,7 @@
 
     <!-- 自定义的博客样式表 -->
     <link href="../stylesheets/blog.css" rel="stylesheet">
+    <link href="../stylesheets/scroll_button.css" rel="stylesheet">
 
     <!-- 为了让IE9以下的浏览器支持HTML5元素和media queries，而导入HTML5 shim和Respond.js -->
     <!--[if lt IE 9]>
@@ -39,7 +40,7 @@
             <ul class="blog-nav">
                 <li class="blog-nav-item"><a href="index.php">博文广场</a></li>
                 <li class="blog-nav-item"><a href="get_post.php">全文阅读</a></li>
-                <li class="blog-nav-item active"><a href="#">发博文</a></li>
+                <li class="blog-nav-item active"><a href="add_post.php">发博文</a></li>
                 <li class="blog-nav-item"><a href="#">功能4</a></li>
                 <li class="blog-nav-item"><a href="#">关于我们</a></li>
             </ul>
@@ -78,14 +79,18 @@
                 </div>
                 <input type="submit" id="submit" value="发博文" class="btn btn-default btn-primary col-sm-offset-6" style="margin-bottom: 60px;">
             </form>
+
+            <button type="button" class="btn btn-default btn-md scroll-to-top">
+                <span class="glyphicon glyphicon-triangle-top"></span>
+            </button>
+            <button type="button" class="btn btn-default btn-md scroll-to-bottom">
+                <span class="glyphicon glyphicon-triangle-bottom"></span>
+            </button>
         </div>
     </div>
 
     <footer class="blog-footer">
         <p>版权所有 &copy; EflyPro睿江云 <?php echo date("Y"); ?> </p>
-        <p>
-            <a href="#">回到顶部</a>
-        </p>
     </footer>
 
     <!-- 为了让页面加载得更快而放在文件底部 -->
@@ -93,6 +98,7 @@
     <!-- Bootstrap核心JavaScript -->
     <script src="../scripts/bootstrap.min.js"></script>
     <script src="../scripts/add_post.js"></script>
+    <script src="../scripts/scroll_button.js"></script>
 </body>
 </html>
 <?php

@@ -29,6 +29,11 @@ $(document).ready(function () {
         var words_count = testInput($("#comment_content").val()).length;
         var remaining_size = max_size - words_count;
         $("#words_count").html("还可以输入：" + remaining_size + "字");
+        if (remaining_size < 0) {
+            $("#commentForm").addClass("has-error");
+        } else {
+            $("#commentForm").removeClass("has-error");
+        }
     }
 
     //绑定表格与函数、入口
@@ -36,6 +41,5 @@ $(document).ready(function () {
     $("#commentForm").submit(function () {
         return validateCommentForm();
     });
-    $("#comment_content").keyup(countWords)
-        .change(countWords); //用鼠标复制时字数统计也会改变
+    $("#comment_content").keyup(countWords).change(countWords); //用鼠标复制时字数统计也会改变
 });

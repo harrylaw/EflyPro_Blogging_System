@@ -18,6 +18,7 @@
 
     <!-- 自定义的博客样式表 -->
     <link href="../stylesheets/blog.css" rel="stylesheet">
+    <link href="../stylesheets/scroll_button.css" rel="stylesheet">
 
     <!-- 为了让IE9以下的浏览器支持HTML5元素和media queries，而导入HTML5 shim和Respond.js -->
     <!--[if lt IE 9]>
@@ -26,13 +27,21 @@
     <![endif]-->
 </head>
 <?php
+    use controller\PostController;
+    use controller\UserController;
+    use controller\CommentController;
+    require_once "../controller/PostController.php";
+    require_once "../controller/UserController.php";
+    require_once "../controller/CommentController.php";
+    $post_controller = PostController::getInstance();
+    $user_controller = UserController::getInstance();
+    $comment_controller = CommentController::getInstance();
+
     $user_id = isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : null;
     $nickname = isset($_SESSION["nickname"]) ? $_SESSION["nickname"] : null;
     $email = isset($_SESSION["email"]) ? $_SESSION["email"] : null;
     $user_type = isset($_SESSION["user_type"]) ? $_SESSION["user_type"] : null;
-    use controller\PostController;
-    require_once "../controller/PostController.php";
-    $post_controller = PostController::getInstance();
+
     if (isset($_GET["post_id"])) {
         $post_id = (int) $_GET["post_id"];
         if ($post_id < 1 || !$post_controller->doesPostExist($post_id)) {
@@ -50,24 +59,24 @@
             </div>
             <ul class="blog-nav">
                 <li class="blog-nav-item"><a href="index.php">博文广场</a></li>
-                <li class="blog-nav-item active"><a href="#">全文阅读</a></li>
+                <li class="blog-nav-item active"><a href="get_post.php">全文阅读</a></li>
                 <li class="blog-nav-item"><a href="add_post.php">发博文</a></li>
                 <li class="blog-nav-item"><a href="#">功能4</a></li>
                 <li class="blog-nav-item"><a href="#">关于我们</a></li>
             </ul>
             <ul class="navbar-right">
                 <?php
-                if (!$user_id) {
-                    echo "<li class='blog-nav-item'><a href='sign_up.php?refer=get_post.php?post_id=$post_id'><span class='glyphicon glyphicon-user'></span> 注册</a></li>";
-                    echo "<li class='blog-nav-item'><a href='log_in.php?refer=get_post.php?post_id=$post_id'><span class='glyphicon glyphicon-log-in'></span> 登录</a></li>";
-                } else {
-                    if ($user_type == "a") {
-                        echo "<li class='blog-nav-userinfo'><span>管理员 <strong>$nickname</strong> ，欢迎回来！</span></li>";
+                    if (!$user_id) {
+                        echo "<li class='blog-nav-item'><a href='sign_up.php?refer=get_post.php?post_id=$post_id'><span class='glyphicon glyphicon-user'></span> 注册</a></li>";
+                        echo "<li class='blog-nav-item'><a href='log_in.php?refer=get_post.php?post_id=$post_id'><span class='glyphicon glyphicon-log-in'></span> 登录</a></li>";
                     } else {
-                        echo "<li class='blog-nav-userinfo'><span>用户 <strong>$nickname</strong> ，欢迎回来！</span></li>";
+                        if ($user_type == "a") {
+                            echo "<li class='blog-nav-userinfo'><span>管理员 <strong>$nickname</strong> ，欢迎回来！</span></li>";
+                        } else {
+                            echo "<li class='blog-nav-userinfo'><span>用户 <strong>$nickname</strong> ，欢迎回来！</span></li>";
+                        }
+                        echo "<li class='blog-nav-item'><a href='log_out.php?refer=get_post.php?post_id=$post_id'><span class='glyphicon glyphicon-log-out'></span>注销</a></li>";
                     }
-                    echo "<li class='blog-nav-item'><a href='log_out.php?refer=get_post.php?post_id=$post_id'><span class='glyphicon glyphicon-log-out'></span>注销</a></li>";
-                }
                 ?>
             </ul>
         </div>
@@ -83,14 +92,12 @@
         <div class="row" id="content">
             <div class="col-sm-8 blog-main">
                 <?php
-                    use controller\UserController;
-                    require_once "../controller/UserController.php";
+
                     if (isset($post_id)) {
                         $post = $post_controller->getPostById($post_id);
                         $title = $post->getTitle();
                         $post_content = $post->getPost_content();
                         $post_author_id = $post->getPost_author_id();
-                        $user_controller = UserController::getInstance();
                         $author_nickname = $user_controller->getNicknameById($post_author_id);
                         $post_date = $post->getPost_date();
 
@@ -127,16 +134,39 @@
                 ?>
 
                 <div class="comment" id="comment">
+                    <?php
+                        if(isset($post_id)) {
+                            $comments = $comment_controller->readCommentsByPost_id($post_id);
+                            if ((bool) $comments) { //有评论时
+                                echo "<h4 class='text-center'>评论区</h4>";
+                                echo "<hr>";
+                                $index = 1;
+                                foreach ($comments as $comment) {
+                                    $comment_content = $comment->getComment_content();
+                                    $comment_author_id = $comment->getComment_author_id();
+                                    $comment_date = $comment->getComment_date();
+                                    $comment_author_nickname = $user_controller->getNicknameById($comment_author_id);
+                                    echo "<div class='blog-comment'>\n";
+                                    echo "<p class='blog-comment-meta'>$index" . "楼&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$comment_author_nickname&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;$comment_date 评论</p>\n";
+                                    echo "<p>". $comment_content ."</p>\n";
+                                    echo "</div>\n";
+                                    echo "<hr>\n";
+                                    $index++;
+                                }
+                            }
+                        }
+                    ?>
                     <form id="commentForm" action="<?php echo htmlspecialchars($_SERVER["REQUEST_URI"]);?>" method="post">
                         <div class="form-group">
-                            <label for="comment_content">评论区</label>
-                            <span id="words_count" class="small" style="float: right">还可以输入：255字</span>
+                            <label for="comment_content">评论框</label>
+                            <span id="words_count" class="small control-label" style="float: right">还可以输入：255字</span>
                             <textarea id="comment_content" name="comment_content" rows="5" class="form-control" placeholder="字数限制：255字"></textarea>
                         </div>
                         <input type="submit" id="submit" value="发表评论" class="btn btn-default btn-primary col-sm-offset-5" style="margin-bottom: 60px;">
                     </form>
                     <?php
                         if (!$user_id) {
+                            echo "<script>document.getElementById('words_count').style.display = 'none';</script>";
                             echo "<script>document.getElementById('comment_content').disabled = 'disabled';</script>";
                             echo "<script>document.getElementById('comment_content').placeholder = '登录后方可发表评论';</script>";
                             echo "<script>document.getElementById('submit').style.display = 'none';</script>";
@@ -182,6 +212,13 @@
                         <li><a href="#">Facebook</a></li>
                     </ol>
                 </div>
+
+                <button type="button" class="btn btn-default btn-md scroll-to-top">
+                    <span class="glyphicon glyphicon-triangle-top"></span>
+                </button>
+                <button type="button" class="btn btn-default btn-md scroll-to-bottom">
+                    <span class="glyphicon glyphicon-triangle-bottom"></span>
+                </button>
             </div><!-- /.blog-sidebar -->
         </div><!-- /.row -->
         <?php
@@ -195,9 +232,6 @@
 
     <footer class="blog-footer">
         <p>版权所有 &copy; EflyPro睿江云 <?php echo date("Y"); ?> </p>
-        <p>
-            <a href="#">回到顶部</a>
-        </p>
     </footer>
 
     <!-- 为了让页面加载得更快而放在文件底部 -->
@@ -205,12 +239,10 @@
     <!-- Bootstrap核心JavaScript -->
     <script src="../scripts/bootstrap.min.js"></script>
     <script src="../scripts/get_post.js"></script>
+    <script src="../scripts/scroll_button.js"></script>
 </body>
 </html>
 <?php
-    use controller\CommentController;
-    require_once "../controller/CommentController.php";
-
     function test_input(string $data): string {
         $data = trim($data);
         $data = htmlspecialchars($data);
@@ -222,7 +254,6 @@
     //入口
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $comment_content = test_input($_POST["comment_content"]);
-        $comment_controller = CommentController::getInstance();
 
         try {
             $comment_controller->comment($comment_content, $post_id, $user_id);

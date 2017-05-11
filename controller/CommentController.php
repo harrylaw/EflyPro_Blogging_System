@@ -37,9 +37,26 @@ class CommentController
         }
     }
 
-    public function readComments() {
+    public function readCommentsByPost_id(int $comment_post_id): array {
         try {
+            $conn = DBController::connectToDB();
+            $comments_raw = Comment::readCommentsByPost_idFromDB($conn, $comment_post_id);
+            $conn = null;
 
+            if (!(bool) $comments_raw) { //数组为空时
+                return array();
+            } else {
+                foreach ($comments_raw as $comment_raw) {
+                    $comment_id = (int) $comment_raw["comment_id"];
+                    $comment_content = stripcslashes($comment_raw["comment_content"]);
+                    $comment_post_id = (int) $comment_raw["comment_post_id"];
+                    $comment_author_id = (int) $comment_raw["comment_author_id"];
+                    $comment_date = $comment_raw["comment_date"];
+                    $comment = new Comment($comment_id, $comment_content, $comment_post_id, $comment_author_id, $comment_date);
+                    array_push($this->comments, $comment);
+                }
+                return $this->comments;
+            }
         } catch (\PDOException $e) {
             //无法连接到数据库
             throw $e;

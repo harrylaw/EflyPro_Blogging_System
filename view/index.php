@@ -18,6 +18,7 @@
 
     <!-- 自定义的博客样式表 -->
     <link href="../stylesheets/blog.css" rel="stylesheet">
+    <link href="../stylesheets/scroll_button.css" rel="stylesheet">
 
     <!-- 为了让IE9以下的浏览器支持HTML5元素和media queries，而导入HTML5 shim和Respond.js -->
     <!--[if lt IE 9]>
@@ -46,10 +47,10 @@
     <nav class="blog-masthead navbar-fixed-top">
         <div class="container">
                 <div class="blog-nav-header">
-                    <a class="blog-nav-brand" href="#">EflyPro博客</a>
+                    <a class="blog-nav-brand" href="index.php">EflyPro博客</a>
                 </div>
                 <ul class="blog-nav">
-                    <li class="blog-nav-item active"><a href="#">博文广场</a></li>
+                    <li class="blog-nav-item active"><a href="index.php">博文广场</a></li>
                     <li class="blog-nav-item"><a href="get_post.php">全文阅读</a></li>
                     <li class="blog-nav-item"><a href="add_post.php">发博文</a></li>
                     <li class="blog-nav-item"><a href="#">功能4</a></li>
@@ -179,6 +180,13 @@
                         <li><a href="#">Facebook</a></li>
                     </ol>
                 </div>
+
+                <button type="button" class="btn btn-default btn-md scroll-to-top">
+                    <span class="glyphicon glyphicon-triangle-top"></span>
+                </button>
+                <button type="button" class="btn btn-default btn-md scroll-to-bottom">
+                    <span class="glyphicon glyphicon-triangle-bottom"></span>
+                </button>
             </div><!-- /.blog-sidebar -->
         </div><!-- /.row -->
         <?php
@@ -192,14 +200,12 @@
 
     <footer class="blog-footer">
         <p>版权所有 &copy; EflyPro睿江云 <?php echo date("Y"); ?> </p>
-        <p>
-            <a href="#">回到顶部</a>
-        </p>
     </footer>
 
     <!-- 为了让页面加载得更快而放在文件底部 -->
     <script src="../scripts/jquery-3.2.1.min.js"></script>
     <!-- Bootstrap核心JavaScript -->
     <script src="../scripts/bootstrap.min.js"></script>
+    <script src="../scripts/scroll_button.js"></script>
 </body>
 </html>
