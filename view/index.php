@@ -11,7 +11,7 @@
     <meta name="description" content="EflyPro睿江云博客系统">
     <meta name="author" content="EflyPro睿江云">
 
-    <title>博文广场|睿江云EflyPro博客系统</title>
+    <title>博文广场|睿江云EflyPro博客</title>
 
     <!-- Bootstrap核心CSS -->
     <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
@@ -22,8 +22,8 @@
 
     <!-- 为了让IE9以下的浏览器支持HTML5元素和media queries，而导入HTML5 shim和Respond.js -->
     <!--[if lt IE 9]>
-      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+    <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
 </head>
 <?php
@@ -52,8 +52,8 @@
                 <ul class="blog-nav">
                     <li class="blog-nav-item active"><a href="index.php">博文广场</a></li>
                     <li class="blog-nav-item"><a href="get_post.php">全文阅读</a></li>
+                    <li class="blog-nav-item"><a href="category_view.php">分类阅读</a></li>
                     <li class="blog-nav-item"><a href="add_post.php">发博文</a></li>
-                    <li class="blog-nav-item"><a href="#">功能4</a></li>
                     <li class="blog-nav-item"><a href="#">关于我们</a></li>
                 </ul>
                 <ul class="navbar-right">
@@ -67,7 +67,7 @@
                             } else {
                                 echo "<li class='blog-nav-userinfo'><span>用户 <strong>$nickname</strong> ，欢迎回来！</span></li>";
                             }
-                            echo "<li class='blog-nav-item'><a href='log_out.php?refer=index.php?page=$current_page'><span class='glyphicon glyphicon-log-out'></span>注销</a></li>";
+                            echo "<li class='blog-nav-item'><a href='log_out.php?refer=index.php?page=$current_page'><span class='glyphicon glyphicon-log-out'></span> 注销</a></li>";
                         }
                     ?>
                 </ul>
@@ -86,7 +86,7 @@
                 <?php
                     use controller\UserController;
                     require_once "../controller/UserController.php";
-                    if (isset($posts_on_current_page)) {
+                    if (isset($posts_on_current_page)) { //当current_page有意义时
                         $posts = $post_controller->readPosts($current_page, $posts_on_each_page, $posts_on_current_page);
                         foreach ($posts as $post){ //$post is of class Post
                             $post_id = $post->getPost_id();
@@ -136,12 +136,12 @@
                         //当current_page有意义时
                         if (isset($posts_on_current_page)) {
                             require_once "pagination_maker.php";
-                            makePagination($current_page, $total_pages);
+                            $pagination_max_range = 5;
+                            makePagination($current_page, $total_pages, $pagination_max_range);
                         }
                       ?>
                   </ul>
               </nav>
-
             </div><!-- /.blog-main -->
 
             <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
@@ -192,7 +192,8 @@
         <?php
             //当current_page没意义时
             if (!isset($posts_on_current_page)) {
-                echo "<script>document.getElementById('content').style.display = 'none';</script>";
+                echo "<script>var content_div = document.getElementById('content');\n"
+                    . "content_div.parentNode.removeChild(content_div);\n</script>";
                 echo "<h4 style='text-align: center; padding-bottom: 250px' class='lead'>您请求的页面不存在，返回 <a href='index.php'>博文广场</a></h4>";
             }
         ?>
@@ -206,6 +207,7 @@
     <script src="../scripts/jquery-3.2.1.min.js"></script>
     <!-- Bootstrap核心JavaScript -->
     <script src="../scripts/bootstrap.min.js"></script>
+    <!-- 自定义JavaScript -->
     <script src="../scripts/scroll_button.js"></script>
 </body>
 </html>

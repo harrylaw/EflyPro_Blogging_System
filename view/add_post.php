@@ -7,8 +7,11 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="EflyPro睿江云博客系统">
+    <meta name="author" content="EflyPro睿江云">
 
-    <title>发博文|睿江云EflyPro博客系统</title>
+    <title>发博文|睿江云EflyPro博客</title>
 
     <!-- Bootstrap核心CSS -->
     <link href="../stylesheets/bootstrap.min.css" rel="stylesheet">
@@ -35,19 +38,19 @@
     <nav class="blog-masthead navbar-fixed-top">
         <div class="container">
             <div class="blog-nav-header">
-                <a class="blog-nav-brand" href="#">EflyPro博客</a>
+                <a class="blog-nav-brand" href="index.php">EflyPro博客</a>
             </div>
             <ul class="blog-nav">
                 <li class="blog-nav-item"><a href="index.php">博文广场</a></li>
                 <li class="blog-nav-item"><a href="get_post.php">全文阅读</a></li>
+                <li class="blog-nav-item"><a href="category_view.php">分类阅读</a></li>
                 <li class="blog-nav-item active"><a href="add_post.php">发博文</a></li>
-                <li class="blog-nav-item"><a href="#">功能4</a></li>
                 <li class="blog-nav-item"><a href="#">关于我们</a></li>
             </ul>
             <ul class="navbar-right">
                 <?php
-                        echo "<li class='blog-nav-userinfo'><span>管理员 <strong>$nickname</strong> ，欢迎回来！</span></li>";
-                        echo "<li class='blog-nav-item'><a href='log_out.php'><span class='glyphicon glyphicon-log-out'></span>注销</a></li>";
+                    echo "<li class='blog-nav-userinfo'><span>管理员 <strong>$nickname</strong> ，欢迎回来！</span></li>";
+                    echo "<li class='blog-nav-item'><a href='log_out.php'><span class='glyphicon glyphicon-log-out'></span> 注销</a></li>";
                 ?>
             </ul>
         </div>
@@ -97,6 +100,7 @@
     <script src="../scripts/jquery-3.2.1.min.js"></script>
     <!-- Bootstrap核心JavaScript -->
     <script src="../scripts/bootstrap.min.js"></script>
+    <!-- 自定义JavaScript -->
     <script src="../scripts/add_post.js"></script>
     <script src="../scripts/scroll_button.js"></script>
 </body>
