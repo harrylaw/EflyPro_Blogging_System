@@ -10,6 +10,7 @@ session_start();
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta name="description" content="EflyPro睿江云博客系统">
     <meta name="author" content="EflyPro睿江云">
+    <link href="../favicon.ico" rel="icon" type="image/x-icon">
 
     <title>分类阅读 | 睿江云EflyPro博客</title>
 
@@ -27,10 +28,33 @@ session_start();
     <![endif]-->
 </head>
 <?php
+    use controller\PostController;
+    use controller\UserController;
+    use controller\CommentController;
+    use controller\CategoryController;
+    require_once "../controller/PostController.php";
+    require_once "../controller/UserController.php";
+    require_once "../controller/CommentController.php";
+    require_once "../controller/CategoryController.php";
+    $post_controller = PostController::getInstance();
+    $user_controller = UserController::getInstance();
+    $comment_controller = CommentController::getInstance();
+    $category_controller = CategoryController::getInstance();
+
     $user_id = isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : null;
     $nickname = isset($_SESSION["nickname"]) ? $_SESSION["nickname"] : null;
     $email = isset($_SESSION["email"]) ? $_SESSION["email"] : null;
     $user_type = isset($_SESSION["user_type"]) ? $_SESSION["user_type"] : null;
+
+    if (isset($_GET["category_id"])) {
+        $category_id = (int) $_GET["category_id"];
+        if ($category_id < 1 || !$category_controller->doesCategory_idExist($category_id)) {
+            $category_id = null;
+        }
+    } else {
+        $category_id = 1;
+    }
+    $categories = $category_controller->readCategories();
 ?>
 <body>
     <nav class="blog-masthead navbar-fixed-top">
@@ -52,20 +76,103 @@ session_start();
             <ul class="navbar-right">
                 <?php
                 if (!$user_id) {
-                    echo "<li class='blog-nav-item'><a href='sign_up.php?refer=category_view.php'><span class='glyphicon glyphicon-user'></span> 注册</a></li>";
-                    echo "<li class='blog-nav-item'><a href='log_in.php?refer=category_view.php'><span class='glyphicon glyphicon-log-in'></span> 登录</a></li>";
+                    echo "<li class='blog-nav-item'><a href='sign_up.php?refer=category_view.php?category_id=$category_id'><span class='glyphicon glyphicon-user'></span> 注册</a></li>";
+                    echo "<li class='blog-nav-item'><a href='log_in.php?refer=category_view.php?category_id=$category_id'><span class='glyphicon glyphicon-log-in'></span> 登录</a></li>";
                 } else {
                     if ($user_type == "a") {
                         echo "<li class='blog-nav-userinfo'><span>管理员 <strong>$nickname</strong> ，欢迎回来！</span></li>";
                     } else {
                         echo "<li class='blog-nav-userinfo'><span>用户 <strong>$nickname</strong> ，欢迎回来！</span></li>";
                     }
-                    echo "<li class='blog-nav-item'><a href='log_out.php?refer=category_view.php'><span class='glyphicon glyphicon-log-out'></span> 注销</a></li>";
+                    echo "<li class='blog-nav-item'><a href='log_out.php?refer=category_view.php?category_id=$category_id'><span class='glyphicon glyphicon-log-out'></span> 注销</a></li>";
                 }
                 ?>
             </ul>
         </div>
     </nav>
+
+    <div class="container">
+        <header class="blog-header">
+            <h1 class="blog-title">分类阅读</h1>
+            <p class="lead blog-description">EFlyPro睿江云博客</p>
+        </header>
+
+        <div class="row" id="content">
+            <section class="col-sm-8 blog-main">
+                <?php
+                    if (isset($category_id)) {
+                        $posts = $post_controller->getPostsByCategory_id($category_id);
+                        $post_category_id = $category_id;
+                        $post_category_name = $category_controller->getCategory_nameByCategory_id($post_category_id);
+                        echo "<h2>博文类别：$post_category_name" . "（共" . count($posts) . "篇）</h2>";
+                        foreach ($posts as $post){ //$post is of class Post
+                            $post_id = $post->getPost_id();
+                            $title = $post->getTitle();
+                            $post_content = $post->getPost_content();
+                            $striped_and_extracted_content = strip_tags(substr($post_content, 0, 1000), "<h1><h2><h3><h4><h5><h6><p><span><ol><ul><li><strong><b><em><i>");
+                            $post_author_id = $post->getPost_author_id();
+                            $user_controller = UserController::getInstance();
+                            $author_nickname = $user_controller->getNicknameById($post_author_id);
+                            $post_date = $post->getPost_date();
+
+                            echo "<article class='blog-post'>\n";
+                            echo "<h2 class='blog-post-title'>$title</h2>\n\n";
+                            echo "<p class='blog-post-meta'>发表时间：$post_date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                                . "作者：$author_nickname&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分类：$post_category_name</p>\n";
+                            echo  $striped_and_extracted_content . "\n</strong></b></em></i></span></li></ol></ul>\n" . "</p>\n";
+                            echo "<p><a href='get_post.php?post_id=$post_id'>阅读全文</a></p>\n";
+                            echo "</article>\n";
+                        }
+                    }
+                ?>
+            </section><!-- /.blog-main -->
+
+            <aside class="col-sm-3 col-sm-offset-1 blog-sidebar">
+                <section class="sidebar-module sidebar-module-inset">
+                    <h4>关于我们</h4>
+                    <p><img width="215px" title="睿江科技" src="../images/logo.png" /></p>
+                    <p><a href="#"><strong>睿江科技研发部</strong></a></p>
+                    <p><strong>官方网站：</strong><a href="http://www.eflypro.com/" target="_blank">EflyPro网站</a></p>
+                    <p><strong>交流QQ群：</strong><a target="_blank" title="点击申请加入EflyPro官方交流群" href="http://shang.qq.com/wpa/qunwpa?idkey=76e5ce21ff1aab74f9b65b58e88ad87e5dac5a8c7fdc4b0a0b5f26811209190f"> 3373916670</a></p>
+                </section>
+
+                <section class="sidebar-module" id="categories_sidebar">
+                    <?php
+                        require_once "categories_sidebar_maker.php";
+                        makeCategories_sidebar($categories);
+                    ?>
+                </section>
+
+                <section class="sidebar-module">
+                    <h4>友情链接</h4>
+                    <ul class="list-unstyled">
+                        <li><a href="#">GitHub</a></li>
+                        <li><a href="#">Twitter</a></li>
+                        <li><a href="#">Facebook</a></li>
+                    </ul>
+                </section>
+
+                <button type="button" class="btn btn-default btn-md scroll-to-top">
+                    <span class="glyphicon glyphicon-triangle-top"></span>
+                </button>
+                <button type="button" class="btn btn-default btn-md scroll-to-bottom">
+                    <span class="glyphicon glyphicon-triangle-bottom"></span>
+                </button>
+            </aside><!-- /.blog-sidebar -->
+        </div><!-- /.row -->
+        <?php
+            //当category_id没意义时
+            if (!isset($category_id)) {
+                echo "<script>var content_div = document.getElementById('content');\n"
+                    . "content_div.parentNode.removeChild(content_div);\n</script>";
+                echo "<h4 style='text-align: center; padding-bottom: 250px' class='lead'>您请求的页面不存在，返回 <a href='index.php'>博文广场</a></h4>";
+            }
+        ?>
+    </div><!-- /.container -->
+
+    <footer class="blog-footer">
+        <p>版权所有 &copy; EflyPro睿江云 <?php echo date("Y"); ?> </p>
+    </footer>
 
 <!-- 为了让页面加载得更快而放在文件底部 -->
 <script src="../scripts/jquery-3.2.1.min.js"></script>

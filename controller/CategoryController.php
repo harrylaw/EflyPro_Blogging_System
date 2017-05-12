@@ -57,4 +57,28 @@ class CategoryController
         }
         return "";
     }
+
+    public function doesCategory_idExist(int $category_id): bool {
+        try {
+            $conn = DBController::connectToDB();
+            $result = Category::doesCategory_idExistInDB($conn, $category_id);
+            $conn = null;
+            return $result;
+        } catch (\PDOException $e) {
+            //无法连接到数据库
+            throw $e;
+        }
+    }
+
+    public function createCategory(string $category_name): bool {
+        try {
+            $conn = DBController::connectToDB();
+            $result = Category::addCategoryToDB($conn, $category_name);
+            $conn = null;
+            return $result;
+        } catch (\PDOException $e) {
+            //无法连接到数据库
+            throw $e;
+        }
+    }
 }

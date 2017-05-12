@@ -13,7 +13,7 @@ require_once "../controller/UserController.php";
  * @return string
  */
 function test_input(string $data): string {
-    $data = stripslashes($data);
+    $data = trim($data);
     $data = htmlspecialchars($data);
     return $data;
 }

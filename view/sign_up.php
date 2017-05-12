@@ -7,6 +7,7 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta name="description" content="EflyPro睿江云博客系统">
     <meta name="author" content="EflyPro睿江云">
+    <link href="../favicon.ico" rel="icon" type="image/x-icon">
 
     <title>注册 | 睿江云EflyPro博客</title>
 
@@ -81,9 +82,8 @@
     <script src="../scripts/bootstrap.min.js"></script>
     <!-- 自定义JavaScript -->
     <script src="../scripts/sign_up.js"></script>
-</body>
-</html>
-<?php
+
+    <?php
     use controller\UserController;
     require_once "../controller/UserController.php";
 
@@ -111,7 +111,11 @@
 
                 if (isset($_GET['refer'])){
                     echo "<h4 style='text-align: center; padding-top: 60px;'>注册成功！1.5秒后自动登录并跳转到注册前页面</h4>";
-                    echo "<script>setTimeout(function() {location.href='" . $_GET['refer'] . "'}, 1500)</script>";
+                    if (isset($_GET['anchor'])){
+                        echo "<script>setTimeout(function() {location.href='" . $_GET['refer'] . "&anchor=" . $_GET['anchor'] . "'}, 1500)</script>";
+                    } else {
+                        echo "<script>setTimeout(function() {location.href='" . $_GET['refer'] . "'}, 1500)</script>";
+                    }
                 } else {
                     echo "<h4 style='text-align: center; padding-top: 60px;'>注册成功！1.5秒后自动登录并跳转到博文广场</h4>";
                     $url = "index.php";
@@ -128,4 +132,6 @@
             echo "<h4 style='text-align: center; padding-top: 60px;'>注册失败！服务器出错，请联系技术人员。</h4>";
         }
     }
-?>
+    ?>
+</body>
+</html>

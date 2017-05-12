@@ -49,12 +49,13 @@ class PostController
         }
     }
 
-    public function readPosts(int $current_page, int $posts_on_each_page, int $posts_on_current_page): array {
+    public function getPosts(int $current_page, int $posts_on_each_page, int $posts_on_current_page): array {
         try {
             $conn = DBController::connectToDB();
             $offset = ($current_page - 1) * $posts_on_each_page;
             $posts_raw = Post::readPostsFromDB($conn, $offset, $posts_on_current_page);
             $conn = null;
+            $this->posts = array();
 
             foreach ($posts_raw as $post_raw) {
                 $post_id = (int) $post_raw["post_id"];
@@ -73,10 +74,33 @@ class PostController
         }
     }
 
+    public function getPostsByCategory_id(int $post_category_id): array {
+        try {
+            $conn = DBController::connectToDB();
+            $posts_raw = Post::getPostsByCategory_idFromDB($conn, $post_category_id);
+            $conn = null;
+            $this->posts = array();
+
+            foreach ($posts_raw as $post_raw) {
+                $post_id = (int) $post_raw["post_id"];
+                $title = stripslashes($post_raw["title"]);
+                $post_author_id = (int) $post_raw["post_author_id"];
+                $post_content = htmlspecialchars_decode(stripslashes($post_raw["post_content"]));
+                $post_date = $post_raw["post_date"];
+                $post = new Post($post_id, $title, $post_author_id, $post_content, $post_date, $post_category_id);
+                array_push($this->posts, $post);
+            }
+            return $this->posts;
+        } catch (\PDOException $e) {
+            //无法连接到数据库
+            throw $e;
+        }
+    }
+
     public function getPostById(int $post_id): Post {
         try {
             $conn = DBController::connectToDB();
-            $post = Post::getPostById($conn, $post_id);
+            $post = Post::getPostByIdFromDB($conn, $post_id);
             $conn = null;
             return $post;
         } catch (\PDOException $e) {

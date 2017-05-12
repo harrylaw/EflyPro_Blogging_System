@@ -10,6 +10,7 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta name="description" content="EflyPro睿江云博客系统">
     <meta name="author" content="EflyPro睿江云">
+    <link href="../favicon.ico" rel="icon" type="image/x-icon">
 
     <title>发博文 | 睿江云EflyPro博客</title>
 
@@ -27,12 +28,20 @@
     <![endif]-->
 </head>
 <?php
+    use controller\PostController;
+    use controller\CategoryController;
+    require_once "../controller/PostController.php";
+    require_once "../controller/CategoryController.php";
+    $post_controller = PostController::getInstance();
+    $category_controller = CategoryController::getInstance();
+
     $user_id = isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : null;
     $nickname = isset($_SESSION["nickname"]) ? $_SESSION["nickname"] : null;
     $user_type = isset($_SESSION["user_type"]) ? $_SESSION["user_type"] : null;
     if ($user_type != 'a') {
         echo "<script>alert('你没有发博文的权限！即将返回博文广场。'); location.href = 'index.php'; </script>";
     }
+    $categories = $category_controller->readCategories();
 ?>
 <body>
     <nav class="blog-masthead navbar-fixed-top">
@@ -79,6 +88,26 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label for="post_category" class="control-label col-sm-1">分类：</label>
+                    <div class="col-sm-7">
+                        <select class="form-control" id="post_category" name="post_category">
+                            <?php
+                                echo "<option value=0>请选择</option>";
+                                foreach ($categories as $category) {
+                                    $category_id = $category->getCategory_id();
+                                    $category_name = $category->getCategory_name();
+                                    echo "<option value=$category_id>$category_name</option>";
+                                }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <label for="new_category" class="sr-only">创建新分类</label>
+                        <input type="text" id="new_category" name="new_category" class="form-control" placeholder="创建新分类" />
+                    </div>
+                    <input type="button" class="btn btn-default btn-primary col-sm-1" value="创建分类" id="create_category_btn" />
+                </div>
+                <div class="form-group">
                     <label for="post_content" class="control-label col-sm-1">内容：</label>
                     <div class="col-sm-11">
                         <textarea id="post_content" name="post_content" rows="20" class="form-control"></textarea>
@@ -107,13 +136,10 @@
     <!-- 自定义JavaScript -->
     <script src="../scripts/add_post.js"></script>
     <script src="../scripts/scroll_button.js"></script>
-</body>
-</html>
-<?php
-    use controller\PostController;
-    require_once "../controller/PostController.php";
 
+    <?php
     function test_input(string $data): string {
+        $data = trim($data);
         $data = htmlspecialchars($data);
         if (!get_magic_quotes_gpc())
             $data = addslashes($data);
@@ -124,8 +150,7 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST" && $user_type == 'a') {
         $title = test_input($_POST["title"]);
         $post_content = test_input($_POST["post_content"]);
-        $post_category_id = 0;
-        $post_controller = PostController::getInstance();
+        $post_category_id = (int) $_POST["post_category"];
 
         try {
             $post_controller->post($title, $user_id, $post_content, $post_category_id);
@@ -136,4 +161,6 @@
             echo "<script>alert('发博文失败！服务器出错，请联系技术人员。')</script>";
         }
     }
-?>
+    ?>
+</body>
+</html>

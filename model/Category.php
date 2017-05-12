@@ -26,6 +26,33 @@ class Category
         return $categories_raw;
     }
 
+    public static function addCategoryToDB(\PDO $conn, string $category_name): bool {
+        if (self::doesCategory_nameExistInDB($conn, $category_name)) {
+            return false;
+        } else {
+            $sql = "INSERT INTO categories (category_name)
+                    VALUES ('$category_name')";
+
+            // use exec() because no results are returned
+            $conn->exec($sql);
+            return true;
+        }
+    }
+
+    public static function doesCategory_idExistInDB(\PDO $conn, int $category_id): bool {
+        $sql = "SELECT * FROM categories WHERE category_id = $category_id";
+
+        $result_set = $conn->query($sql);
+        return (bool) $result_set->rowCount();
+    }
+
+    public static function doesCategory_nameExistInDB(\PDO $conn, string $category_name): bool {
+        $sql = "SELECT * FROM categories WHERE category_name ='$category_name'";
+
+        $result_set = $conn->query($sql);
+        return (bool) $result_set->rowCount();
+    }
+
     public function getCategory_id(): int {
         return $this->category_id;
     }

@@ -43,6 +43,14 @@ class Post
         return $posts_raw;
     }
 
+    public static function getPostsByCategory_idFromDB(\PDO $conn, int $post_category_id): array {
+        $sql = "SELECT * FROM posts WHERE post_category_id = $post_category_id ORDER BY post_id DESC";
+
+        $result_set = $conn->query($sql);
+        $posts_raw = $result_set->fetchAll(\PDO::FETCH_ASSOC);
+        return $posts_raw;
+    }
+
     public static function countPosts(\PDO $conn): int {
         $sql = "SELECT COUNT(post_id) FROM posts";
 
@@ -51,7 +59,7 @@ class Post
         return $posts_count_array["COUNT(post_id)"];
     }
 
-    public static function getPostById(\PDO $conn, int $post_id): Post {
+    public static function getPostByIdFromDB(\PDO $conn, int $post_id): Post {
         $sql = "SELECT * FROM posts WHERE post_id = $post_id";
 
         $result_set = $conn->query($sql);

@@ -35,8 +35,7 @@ $(document).ready(function () {
             function (data) {
                 if (data === "TAKEN") {
                     emailTaken = true;
-                }
-                else {
+                } else {
                     emailTaken = false;
                 }
             }

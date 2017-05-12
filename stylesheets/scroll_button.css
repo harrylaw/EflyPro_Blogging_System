@@ -3,7 +3,7 @@
     right: 3em;
     /*width: 40px;*/
     /*height: 40px;*/
-    /*background-image: url(../image/scroll_to_top.png);*/
+    /*background-images: url(../images/scroll_to_top.png);*/
     border-radius: 15px;
     /*border: 1px solid #CCCCCC;*/
     background-color: rgb(122, 122, 122);
@@ -20,7 +20,7 @@
 }
 
 .scroll-to-top:hover, .scroll-to-bottom:hover {
-    /*background-image: url(../image/scroll_to_top_hover.png);*/
+    /*background-images: url(../images/scroll_to_top_hover.png);*/
     background-color: black;
     color: white;
 }

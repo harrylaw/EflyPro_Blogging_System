@@ -16,8 +16,7 @@ $(document).ready(function () {
             function (data, status) {
                 if (data === "TAKEN") {
                     emailTaken = true;
-                }
-                else {
+                } else {
                     emailTaken = false;
                 }
             }

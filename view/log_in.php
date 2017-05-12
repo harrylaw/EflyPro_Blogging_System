@@ -7,6 +7,7 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta name="description" content="EflyPro睿江云博客系统">
     <meta name="author" content="EflyPro睿江云">
+    <link href="../favicon.ico" rel="icon" type="image/x-icon">
 
     <title>登录 | 睿江云EflyPro博客</title>
 
@@ -69,9 +70,8 @@
     <script src="../scripts/bootstrap.min.js"></script>
     <!-- 自定义JavaScript -->
     <script src="../scripts/log_in.js"></script>
-</body>
-</html>
-<?php
+
+    <?php
     use controller\UserController;
     require_once "../controller/UserController.php";
 
@@ -100,7 +100,11 @@
                 echo "<script>$('#logInForm').css('display', 'none');</script>";
                 if (isset($_GET['refer'])){
                     echo "<h4 style='text-align: center; padding-top: 60px;'>登录成功！1.5秒后跳转到登录前页面</h4>";
-                    echo "<script>setTimeout(function() {location.href='" . $_GET['refer'] . "'}, 1500)</script>";
+                    if (isset($_GET['anchor'])){
+                        echo "<script>setTimeout(function() {location.href='" . $_GET['refer'] . "&anchor=" . $_GET['anchor'] . "'}, 1500)</script>";
+                    } else {
+                        echo "<script>setTimeout(function() {location.href='" . $_GET['refer'] . "'}, 1500)</script>";
+                    }
                 } else {
                     echo "<h4 style='text-align: center; padding-top: 60px;'>登录成功！1.5秒后跳转到博文广场</h4>";
                     $url = "index.php";
@@ -117,4 +121,6 @@
             echo "<h4 style='text-align: center; padding-top: 60px;'>登录失败！服务器出错，请联系技术人员。</h4>";
         }
     }
-?>
+    ?>
+</body>
+</html>

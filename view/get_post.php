@@ -10,6 +10,7 @@
     <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
     <meta name="description" content="EflyPro睿江云博客系统">
     <meta name="author" content="EflyPro睿江云">
+    <link href="../favicon.ico" rel="icon" type="image/x-icon">
 
     <title>全文阅读 | 睿江云EflyPro博客</title>
 
@@ -30,12 +31,15 @@
     use controller\PostController;
     use controller\UserController;
     use controller\CommentController;
+    use controller\CategoryController;
     require_once "../controller/PostController.php";
     require_once "../controller/UserController.php";
     require_once "../controller/CommentController.php";
+    require_once "../controller/CategoryController.php";
     $post_controller = PostController::getInstance();
     $user_controller = UserController::getInstance();
     $comment_controller = CommentController::getInstance();
+    $category_controller = CategoryController::getInstance();
 
     $user_id = isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : null;
     $nickname = isset($_SESSION["nickname"]) ? $_SESSION["nickname"] : null;
@@ -50,6 +54,7 @@
     } else {
         $post_id = 1;
     }
+    $categories = $category_controller->readCategories();
 ?>
 <body>
     <nav class="blog-masthead navbar-fixed-top">
@@ -95,7 +100,6 @@
         <div class="row" id="content">
             <section class="col-sm-8 blog-main">
                 <?php
-
                     if (isset($post_id)) {
                         $post = $post_controller->getPostById($post_id);
                         $title = $post->getTitle();
@@ -103,30 +107,39 @@
                         $post_author_id = $post->getPost_author_id();
                         $author_nickname = $user_controller->getNicknameById($post_author_id);
                         $post_date = $post->getPost_date();
+                        $post_category_id = $post->getPost_category_id();
+                        if ($post_category_id) {
+                            $post_category_name = $category_controller->getCategory_nameByCategory_id($post_category_id);
+                        } else {
+                            $post_category_name = "无";
+                        }
 
                         //上下篇导航
                         $last_post_id_and_title = $post_controller->getLastPost_idAndTitle($post_id);
                         $next_post_id_and_title = $post_controller->getNextPost_idAndTitle($post_id);
                         if ($last_post_id = $last_post_id_and_title["post_id"]) {
                             $last_title = $last_post_id_and_title["title"];
-                            echo "<a href='get_post.php?post_id=$last_post_id'>上一篇: $last_title</a>\n";
+                            echo "<p><a href='get_post.php?post_id=$last_post_id'>上一篇: $last_title</a></p>\n";
                         } else {
-                            echo "<span>上一篇: 没有上一篇了</span>\n";
+                            echo "<p>上一篇: 没有上一篇了</p>\n";
                         }
-                        echo "<br>\n";
                         if ($next_post_id = $next_post_id_and_title["post_id"]) {
                             $next_title = $next_post_id_and_title["title"];
-                            echo "<a href='get_post.php?post_id=$next_post_id'>下一篇: $next_title</a>\n";
+                            echo "<p><a href='get_post.php?post_id=$next_post_id'>下一篇: $next_title</a></p>\n";
                         } else {
-                            echo "<span>下一篇: 没有下一篇了</span>\n";
+                            echo "<p>下一篇: 没有下一篇了</p>\n";
                         }
-                        echo "<br><br>\n";
-
 
                         //打印博文
                         echo "<article class='blog-post'>\n";
                         echo "<h2 class='blog-post-title'>$title</h2>\n\n";
-                        echo "<p class='blog-post-meta'>发表时间：$post_date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;作者：$author_nickname</p>\n";
+                        if ($post_category_id){
+                            echo "<p class='blog-post-meta'>发表时间：$post_date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                                . "作者：$author_nickname&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分类：<a href='category_view.php?category_id=$post_category_id'>$post_category_name</a></p>\n";
+                        } else {
+                            echo "<p class='blog-post-meta'>发表时间：$post_date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;"
+                                . "作者：$author_nickname&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;分类：无</p>\n";
+                        }
                         echo  $post_content . "\n";
                         echo "</article>\n";
                     }
@@ -169,7 +182,7 @@
                             echo "<script>document.getElementById('comment_content').disabled = 'disabled';</script>";
                             echo "<script>document.getElementById('comment_content').placeholder = '登录后方可发表评论';</script>";
                             echo "<script>document.getElementById('submit').style.display = 'none';</script>";
-                            echo "<p class='text-center small'>现在 <a href='log_in.php?refer=get_post.php?post_id=$post_id'>登录</a> 或 <a href='sign_up.php?refer=get_post.php?post_id=$post_id'>注册</a></p>";
+                            echo "<p class='text-center small'>现在 <a href='log_in.php?refer=get_post.php?post_id=$post_id&anchor=comment'>登录</a> 或 <a href='sign_up.php?refer=get_post.php?post_id=$post_id&anchor=comment'>注册</a></p>";
                         }
                     ?>
                 </section>
@@ -178,36 +191,26 @@
             <aside class="col-sm-3 col-sm-offset-1 blog-sidebar">
                 <section class="sidebar-module sidebar-module-inset">
                     <h4>关于我们</h4>
-                    <p><img width="215px" title="睿江科技" src="../image/logo.png" /></p>
+                    <p><img width="215px" title="睿江科技" src="../images/logo.png" /></p>
                     <p><a href="#"><strong>睿江科技研发部</strong></a></p>
                     <p><strong>官方网站：</strong><a href="http://www.eflypro.com/" target="_blank">EflyPro网站</a></p>
                     <p><strong>交流QQ群：</strong><a target="_blank" title="点击申请加入EflyPro官方交流群" href="http://shang.qq.com/wpa/qunwpa?idkey=76e5ce21ff1aab74f9b65b58e88ad87e5dac5a8c7fdc4b0a0b5f26811209190f"> 3373916670</a></p>
                 </section>
 
-                <section class="sidebar-module">
-                    <h4>分类</h4>
-                    <ol class="list-unstyled">
-                        <?php
-                            use controller\CategoryController;
-                            require_once "../controller/CategoryController.php";
-                            $category_controller = CategoryController::getInstance();
-                            $categories = $category_controller->readCategories();
-                            foreach ($categories as $category) {
-                                $category_id = $category->getCategory_id();
-                                $category_name = $category->getCategory_name();
-                                echo "<li><a href='category_view.php?category_id=$category_id'>$category_name</a></li>\n";
-                            }
-                        ?>
-                    </ol>
+                <section class="sidebar-module" id="categories_sidebar">
+                    <?php
+                        require_once "categories_sidebar_maker.php";
+                        makeCategories_sidebar($categories);
+                    ?>
                 </section>
 
                 <section class="sidebar-module">
                     <h4>友情链接</h4>
-                    <ol class="list-unstyled">
+                    <ul class="list-unstyled">
                         <li><a href="#">GitHub</a></li>
                         <li><a href="#">Twitter</a></li>
                         <li><a href="#">Facebook</a></li>
-                    </ol>
+                    </ul>
                 </section>
 
                 <button type="button" class="btn btn-default btn-md scroll-to-top">
@@ -239,9 +242,8 @@
     <!-- 自定义JavaScript -->
     <script src="../scripts/get_post.js"></script>
     <script src="../scripts/scroll_button.js"></script>
-</body>
-</html>
-<?php
+
+    <?php
     function test_input(string $data): string {
         $data = trim($data);
         $data = htmlspecialchars($data);
@@ -260,8 +262,13 @@
             echo "<script>location.reload();</script>";
         } catch (\PDOException $e) {
             //无法连接到数据库
-            echo $e;
-            //echo "<script>alert('发表评论失败！服务器出错，请联系技术人员。')</script>";
+            echo "<script>alert('发表评论失败！服务器出错，请联系技术人员。')</script>";
         }
     }
-?>
+    if (isset($_GET["anchor"]) && $_GET["anchor"] == "comment") {
+        echo "<script>$('html, body').animate({scrollTop: $(document).height() - $(window).height()}, 0);</script>";
+    }
+    ?>
+</body>
+</html>
+
