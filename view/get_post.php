@@ -1,5 +1,5 @@
 <?php
-    session_start();
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -266,7 +266,7 @@
         }
     }
     if (isset($_GET["anchor"]) && $_GET["anchor"] == "comment") {
-        echo "<script>$('html, body').animate({scrollTop: $(document).height() - $(window).height()}, 0);</script>";
+        echo "<script>$('html, body').scrollTop($(document).height() - $(window).height());</script>";
     }
     ?>
 </body>

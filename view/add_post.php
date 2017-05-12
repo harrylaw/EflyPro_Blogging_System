@@ -1,5 +1,5 @@
 <?php
-    session_start();
+session_start();
 ?>
 <!DOCTYPE html>
 <html lang="zh-CN">
@@ -28,20 +28,20 @@
     <![endif]-->
 </head>
 <?php
-    use controller\PostController;
-    use controller\CategoryController;
-    require_once "../controller/PostController.php";
-    require_once "../controller/CategoryController.php";
-    $post_controller = PostController::getInstance();
-    $category_controller = CategoryController::getInstance();
+use controller\PostController;
+use controller\CategoryController;
+require_once "../controller/PostController.php";
+require_once "../controller/CategoryController.php";
+$post_controller = PostController::getInstance();
+$category_controller = CategoryController::getInstance();
 
-    $user_id = isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : null;
-    $nickname = isset($_SESSION["nickname"]) ? $_SESSION["nickname"] : null;
-    $user_type = isset($_SESSION["user_type"]) ? $_SESSION["user_type"] : null;
-    if ($user_type != 'a') {
-        echo "<script>alert('你没有发博文的权限！即将返回博文广场。'); location.href = 'index.php'; </script>";
-    }
-    $categories = $category_controller->readCategories();
+$user_id = isset($_SESSION["user_id"]) ? $_SESSION["user_id"] : null;
+$nickname = isset($_SESSION["nickname"]) ? $_SESSION["nickname"] : null;
+$user_type = isset($_SESSION["user_type"]) ? $_SESSION["user_type"] : null;
+if ($user_type != 'a') {
+    echo "<script>alert('你没有发博文的权限！即将返回博文广场。'); location.href = 'index.php'; </script>";
+}
+$categories = $category_controller->readCategories();
 ?>
 <body>
     <nav class="blog-masthead navbar-fixed-top">

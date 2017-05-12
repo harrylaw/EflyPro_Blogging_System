@@ -46,7 +46,6 @@ class User
     }
 
     public function writeToSession() {
-        session_start();
         $_SESSION["user_id"] = $this->user_id;
         $_SESSION["nickname"] = $this->nickname;
         $_SESSION["email"] = $this->email;
