@@ -4,6 +4,7 @@
   
 本系统入口文件为view/index.php  
 数据库配置文件为controller/DBController.php  
+请将服务器根目录设为EflyPro_Blogging_System  
 请先配置好数据库再打开入口文件（目前使用的是公司的云服务器：121.201.44.207）  
   
 如需重新创建数据库，请使用database_creation_scripts里的.sql文件
