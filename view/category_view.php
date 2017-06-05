@@ -174,11 +174,13 @@ session_start();
         <p>版权所有 &copy; EflyPro睿江云 <?php echo date("Y"); ?> </p>
     </footer>
 
-<!-- 为了让页面加载得更快而放在文件底部 -->
-<script src="../scripts/jquery-3.2.1.min.js"></script>
-<!-- Bootstrap核心JavaScript -->
-<script src="../scripts/bootstrap.min.js"></script>
-<!-- 自定义JavaScript -->
-<script src="../scripts/scroll_button.js"></script>
+    <!-- 为了让页面加载得更快而放在文件底部 -->
+    <script src="../scripts/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap核心JavaScript -->
+    <script src="../scripts/bootstrap.min.js"></script>
+    <!-- 自定义JavaScript -->
+    <script src="../scripts/scroll_button.js"></script>
+    <!-- 分享按钮 -->
+    <script>window._bd_share_config={"common":{"bdSnsKey":{},"bdText":"","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"16"},"slide":{"type":"slide","bdImg":"2","bdPos":"right","bdTop":"100"},"image":{"viewList":["qzone","tsina","tqq","renren","weixin"],"viewText":"分享到：","viewSize":"16"},"selectShare":{"bdContainerClass":null,"bdSelectMiniList":["qzone","tsina","tqq","renren","weixin"]}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];</script>
 </body>
 </html>
