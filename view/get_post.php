@@ -207,9 +207,9 @@ session_start();
                 <section class="sidebar-module">
                     <h4>友情链接</h4>
                     <ul class="list-unstyled">
-                        <li><a href="#">GitHub</a></li>
-                        <li><a href="#">Twitter</a></li>
-                        <li><a href="#">Facebook</a></li>
+                        <li><a href="#">睿江云计算股份有限公司</a></li>
+                        <li><a href="#">睿江云科技</a></li>
+                        <li><a href="#">睿江云科技研发部</a></li>
                     </ul>
                 </section>
 
